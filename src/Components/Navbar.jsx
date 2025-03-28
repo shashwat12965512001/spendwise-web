@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,7 +11,6 @@ export default function Navbar() {
         { name: "Home", path: "/" },
         { name: "Dashboard", path: "/dashboard" },
         { name: "Transactions", path: "/transactions" },
-        { name: "Profile", path: "/profile" },
         { name: "Settings", path: "/settings" },
     ];
 
