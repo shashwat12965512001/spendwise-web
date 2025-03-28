@@ -31,7 +31,7 @@ export default () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || "Failed to fetch transactions");
+                console.log(data.error || "Failed to fetch transactions");
             }
 
             setTransactions(data);
@@ -53,7 +53,7 @@ export default () => {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to delete transaction");
+                console.log("Failed to delete transaction");
             }
 
             // Remove deleted transaction from state
@@ -79,7 +79,7 @@ export default () => {
 
             const updatedTransaction = await response.json();
             if (!response.ok) {
-                throw new Error("Failed to update transaction");
+                console.log("Failed to update transaction");
             }
 
             // Update the transaction in state
@@ -124,7 +124,7 @@ export default () => {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to add expense");
+                console.log("Failed to add expense");
             }
 
             const data = await response.json();
