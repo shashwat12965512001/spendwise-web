@@ -100,7 +100,8 @@ export default () => {
         name: "",
         date: "",
         amount: "",
-        category: "food",
+        category: "income",
+        expense_type: "food",
         upi_id: "",
         transaction_id: "",
     });
@@ -131,7 +132,7 @@ export default () => {
             console.log("Expense added:", data);
 
             // Clear the form
-            setExpense({ name: "", date: "", amount: "", category: "food", upi_id: "", transaction_id: "" });
+            setExpense({ name: "", date: "", amount: "", category: "", expense_type: "", upi_id: "", transaction_id: "" });
 
             // Close the modal (optional)
             document.getElementById("spendwise-add-new-expense").classList.add("hidden");
@@ -157,47 +158,70 @@ export default () => {
         }
     };
 
+    console.log(transactions);
+
     return (
         <>
             {/* Edit Transaction Modal */}
             {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-400 bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 className="text-lg font-semibold">Edit Transaction</h2>
-
-                        <input
-                            type="text"
-                            className="w-full p-2 border rounded mt-2"
-                            value={editTransaction.name}
-                            onChange={(e) => setEditTransaction({ ...editTransaction, name: e.target.value })}
-                        />
-                        <input
-                            type="number"
-                            className="w-full p-2 border rounded mt-2"
-                            value={editTransaction.amount}
-                            onChange={(e) => setEditTransaction({ ...editTransaction, amount: e.target.value })}
-                        />
-                        <button className="bg-blue-500 text-white p-2 rounded mt-2" onClick={updateTransaction}>
-                            Save Changes
-                        </button>
-                        <button className="bg-gray-500 text-white p-2 rounded mt-2 ml-2" onClick={() => setShowModal(false)}>
-                            Cancel
-                        </button>
+                <div id="spendwise-update-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
+                    <div className="relative p-4 w-full max-w-md max-h-full">
+                        {/* Modal content */}
+                        <div className="relative bg-white rounded-lg shadow-sm">
+                            {/* Modal header */}
+                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+                                <h3 className="text-xl font-semibold text-gray-900">
+                                    Edit Transaction
+                                </h3>
+                                <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-update-expense">
+                                    <svg className="w-3 h-3" onClick={() => setShowModal(false)} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                    </svg>
+                                    <span className="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            {/* Modal body */}
+                            <div className="p-5 md:p-5">
+                                <form className="space-y-4" action="#">
+                                    <div>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                                        <input type="text" value={editTransaction.name} onChange={(e) => setEditTransaction({ ...editTransaction, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                                        <input type="text" value={new Date(editTransaction.date).toLocaleDateString()} onChange={(e) => setEditTransaction({ ...editTransaction, date: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900">Amount</label>
+                                        <input type="number" value={editTransaction.amount} onChange={(e) => setEditTransaction({ ...editTransaction, amount: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900">UPI ID</label>
+                                        <input type="text" value={editTransaction.upi_id} onChange={(e) => setEditTransaction({ ...editTransaction, upi_id: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900">Transaction ID</label>
+                                        <input type="text" value={editTransaction.transaction_id} onChange={(e) => setEditTransaction({ ...editTransaction, transaction_id: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    </div>
+                                    <button type="button" onClick={updateTransaction} className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Update</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
 
             {/* Add new Expense Modal */}
-            <div id="spendwise-add-new-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div id="spendwise-add-new-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
                 <div className="relative p-4 w-full max-w-md max-h-full">
                     {/* Modal content */}
-                    <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                    <div className="relative bg-white rounded-lg shadow-sm">
                         {/* Modal header */}
-                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+                            <h3 className="text-xl font-semibold text-gray-900">
                                 Add new Expense
                             </h3>
-                            <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="spendwise-add-new-expense">
+                            <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-add-new-expense">
                                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
@@ -208,34 +232,41 @@ export default () => {
                         <div className="p-5 md:p-5">
                             <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                                 <div>
-                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input type="text" name="name" id="name" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                                    <input type="text" name="name" id="name" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                    <input type="date" name="date" id="date" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                                    <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                                    <input type="date" name="date" id="date" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
-                                    <input type="number" name="amount" id="amount" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                                    <label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-900">Amount</label>
+                                    <input type="number" name="amount" id="amount" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900">Category</label>
                                     <select name="category" id="category" className="border border-gray-300 p-2 sm: mr-4 block w-full whitespace-pre rounded-lg p-1 pr-10 outline-none focus:shadow sm:text-sm" onChange={handleChange}>
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor="expense_type" className="block mb-2 text-sm font-medium text-gray-900">Expense Type</label>
+                                    <select name="expense_type" id="expense_type" className="border border-gray-300 p-2 sm: mr-4 block w-full whitespace-pre rounded-lg p-1 pr-10 outline-none focus:shadow sm:text-sm" onChange={handleChange}>
                                         <option value="food">Food</option>
                                         <option value="travel">Travel</option>
                                         <option value="entertainment">Entertainment</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label htmlFor="upi_id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">UPI ID (Optional)</label>
-                                    <input type="text" name="upi_id" id="upi_id" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                                    <label htmlFor="upi_id" className="block mb-2 text-sm font-medium text-gray-900">UPI ID (Optional)</label>
+                                    <input type="text" name="upi_id" id="upi_id" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                                 </div>
                                 <div>
-                                    <label htmlFor="transaction_id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Transaction ID (Optional)</label>
-                                    <input type="text" name="transaction_id" id="transaction_id" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                                    <label htmlFor="transaction_id" className="block mb-2 text-sm font-medium text-gray-900">Transaction ID (Optional)</label>
+                                    <input type="text" name="transaction_id" id="transaction_id" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                                 </div>
-                                <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Expense</button>
+                                <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Add Expense</button>
                             </form>
                         </div>
                     </div>
@@ -244,6 +275,7 @@ export default () => {
 
             {/* Transaction History */}
             <div className="spendwise-transactions-screen mx-auto mt-8 max-w-screen-lg px-2">
+                {/* Upper section */}
                 <div className="sm:flex sm:items-center sm:justify-between flex-col sm:flex-row">
                     <p className="flex-1 text-base font-bold text-gray-900">
                         Transaction History
@@ -297,12 +329,13 @@ export default () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Table */}
                 <div className="mt-6 overflow-hidden rounded-xl bg-white shadow">
                     <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2">
                         <thead className="hidden border-b lg:table-header-group">
-                            <tr className="">
+                            <tr>
                                 <td
-                                    width="50%"
                                     className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6"
                                 >
                                     Name
@@ -312,6 +345,12 @@ export default () => {
                                 </td>
                                 <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
                                     Amount
+                                </td>
+                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
+                                    UPI ID
+                                </td>
+                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
+                                    Transaction ID
                                 </td>
                                 <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
                                     Category
@@ -327,7 +366,7 @@ export default () => {
                                 transactions.map((transaction, index) => (
                                     <tr key={index} className="">
                                         {/* Name */}
-                                        <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
+                                        <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                             {transaction.name}
                                             <div className="mt-1 lg:hidden">
                                                 <p className="font-normal text-gray-500">
@@ -342,8 +381,18 @@ export default () => {
                                         </td>
 
                                         {/* Amount */}
+                                        <td className={`whitespace-no-wrap py-4 px-6 text-right text-sm lg:text-left ${transaction.category == "income" ? "text-green-900" : "text-red-900"}`}>
+                                            {transaction.category == "income" ? "+  " : "-  "} ${transaction.amount.toFixed(2)}
+                                        </td>
+
+                                        {/* UPI ID */}
                                         <td className="whitespace-no-wrap py-4 px-6 text-right text-sm text-gray-600 lg:text-left">
-                                            ${transaction.amount.toFixed(2)}
+                                            {transaction.upi_id || "N/A"}
+                                        </td>
+
+                                        {/* Transaction ID */}
+                                        <td className="whitespace-no-wrap py-4 px-6 text-right text-sm text-gray-600 lg:text-left">
+                                            {transaction.transaction_id || "N/A"}
                                             <div className={`flex mt-1 ml-auto w-fit items-center rounded-full ${getStatusColor(transaction.category)} py-2 px-3 text-left text-xs font-medium text-white lg:hidden`}>
                                                 {transaction.category}
                                             </div>
@@ -351,10 +400,11 @@ export default () => {
 
                                         {/* Status (only visible on large screens) */}
                                         <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
-                                            <div className={`inline-flex items-center rounded-full ${getStatusColor(transaction.category)} py-2 px-3 text-xs text-white`}>
-                                                {transaction.category}
+                                            <div className={`inline-flex items-center rounded-full ${getStatusColor(transaction.expense_type)} py-2 px-3 text-xs text-white`}>
+                                                {transaction.expense_type}
                                             </div>
                                         </td>
+
                                         <td className="whitespace-nowrap py-4 text-sm font-medium text-gray-500 sm:px-6 flex gap-2">
                                             {/* Edit Icon */}
                                             <svg className="cursor-pointer h-5 w-5 text-yellow-500" onClick={() => openEditModal(transaction)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
