@@ -3,6 +3,7 @@
 import { FiPlus } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
+import API_BASE_URL from "../utils/apiConfig";
 
 export default () => {
     useAuth();
@@ -20,7 +21,7 @@ export default () => {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://localhost:5000/api/transactions/all", {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/all`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -44,7 +45,7 @@ export default () => {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`http://localhost:5000/api/transactions/delete/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -68,7 +69,7 @@ export default () => {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`http://localhost:5000/api/transactions/update/${editTransaction._id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/update/${editTransaction._id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -116,7 +117,7 @@ export default () => {
         e.preventDefault(); // Prevent default form reload
 
         try {
-            const response = await fetch("http://localhost:5000/api/transactions/add", {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -157,8 +158,6 @@ export default () => {
                 return "bg-gray-400"; // Default color
         }
     };
-
-    console.log(transactions);
 
     return (
         <>
@@ -277,7 +276,7 @@ export default () => {
             <div className="spendwise-transactions-screen mx-auto mt-8 max-w-screen-lg px-2">
                 {/* Upper section */}
                 <div className="sm:flex sm:items-center sm:justify-between flex-col sm:flex-row">
-                    <p className="flex-1 text-base font-bold text-gray-900">
+                    <p className="flex-1 text-2xl font-bold text-gray-900">
                         Transaction History
                     </p>
                     <div className="mt-4 sm:mt-0">

@@ -8,8 +8,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="bg-black-100 text-gray-900 font-sans">
+    <html lang="en" className="hydrated">
+      <body className="bg-black-100 text-gray-900 font-sans hydrated" data-new-gr-c-s-check-loaded="14.1229.0" data-gr-ext-installed="">
         {/* Links */}
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;1,600&display=swap" rel="stylesheet" />
 
@@ -65,6 +65,6 @@ export default function RootLayout({ children }) {
           </div>
         </footer>
       </body>
-    </html>
+    </html >
   );
 }

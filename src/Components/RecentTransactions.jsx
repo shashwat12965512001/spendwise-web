@@ -1,14 +1,42 @@
-import { motion } from "framer-motion";
+"use client";
 
-export default function RecentTransactions() {
-    // Dummy transactions data
-    const transactions = [
-        { id: 1, category: "Food", amount: 20, type: "expense", date: "2025-03-25" },
-        { id: 2, category: "Salary", amount: 3000, type: "income", date: "2025-03-24" },
-        { id: 3, category: "Shopping", amount: 150, type: "expense", date: "2025-03-23" },
-        { id: 4, category: "Freelance", amount: 500, type: "income", date: "2025-03-22" },
-        { id: 5, category: "Transport", amount: 50, type: "expense", date: "2025-03-21" },
-    ];
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import API_BASE_URL from "../app/utils/apiConfig";
+
+export const RecentTransactions = ({ count = 10 }) => {
+    const [transactions, setTransactions] = useState([]);
+
+    const fetchRecentTransactions = async (count) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${count}`);
+            const data = await response.json();
+
+            if (data.success) {
+                return data.transactions;
+            } else {
+                console.error("Error fetching transactions:", data.error);
+                return [];
+            }
+        } catch (error) {
+            console.error("Server error:", error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        const getTransactions = async () => {
+            const data = await fetchRecentTransactions(count);
+            setTransactions(data);
+        };
+
+        getTransactions();
+    }, [count]);
+
+    const capitalizeFirstLetter = (str) => {
+        if (!str) return "";
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    };
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md mt-6">
@@ -23,15 +51,15 @@ export default function RecentTransactions() {
                         transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
                         <div>
-                            <p className="text-sm font-medium">{txn.category}</p>
-                            <p className="text-xs text-gray-500">{txn.date}</p>
+                            <p className="text-sm font-medium">{capitalizeFirstLetter(txn.expense_type)}</p>
+                            <p className="text-xs text-gray-500">{new Date(txn.date).toLocaleDateString()}</p>
                         </div>
-                        <p className={`font-bold ${txn.type === "income" ? "text-green-500" : "text-red-500"}`}>
-                            {txn.type === "income" ? "+" : "-"}${txn.amount}
+                        <p className={`font-bold ${txn.category === "income" ? "text-green-500" : "text-red-500"}`}>
+                            {txn.category === "income" ? "+" : "-"}${txn.amount}
                         </p>
                     </motion.li>
                 ))}
             </ul>
         </div>
     );
-}
+};

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import API_BASE_URL from "../utils/apiConfig";
 
 export default () => {
 
@@ -28,14 +29,14 @@ export default () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:5000/api/users/signup", {
+            const response = await fetch(`${API_BASE_URL}/api/users/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(user),
             });
-            
+
             const data = await response.json();
             if (!response.ok) {
                 setresultError(data.error || "Failed to add user"); // Use error message from response
@@ -46,8 +47,6 @@ export default () => {
             setTimeout(() => {
                 router.push("/login");
             }, 1000);
-
-            console.log("User added:", data);
 
             // Clear the form
             setUser({ name: "", email: "", mobile: "", password: "" });

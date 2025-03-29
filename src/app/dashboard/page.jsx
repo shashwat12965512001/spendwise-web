@@ -1,7 +1,7 @@
 "use client";
 
 import Card from "@/components/Card";
-import RecentTransactions from "@/Components/RecentTransactions";
+import { RecentTransactions } from "@/Components/RecentTransactions";
 import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 
@@ -42,6 +42,14 @@ export default () => {
         },
     ];
 
+    const getUserCreationDate = (user) => {
+        if (user && user.createdAt) {
+            const date = new Date(user.createdAt);
+            return date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
+        }
+        return "August 2024"; // Default value
+    };
+
     return (
         <>
             {/* Hero */}
@@ -54,15 +62,13 @@ export default () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-
-                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                    <div className="relative w-10 h-10 overflow-hidden rounded-full bg-gray-600">
                         <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
                     </div>
 
-                    {/* <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="" /> */}
                     <div className="font-medium">
                         <div>{user ? user.name : "John Doe"}</div>
-                        <div className="text-sm text-gray-500">Joined in August 2014</div>
+                        <div className="text-sm text-gray-500">{"Joined in " + getUserCreationDate(user)}</div>
                     </div>
                 </div>
             </div>
@@ -76,7 +82,7 @@ export default () => {
 
             {/* Recent Trasactions */}
             <div className="p-4">
-                <RecentTransactions />
+                <RecentTransactions count={10} />
             </div>
         </>
     );
