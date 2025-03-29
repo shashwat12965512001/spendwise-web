@@ -44,7 +44,7 @@ export const RecentTransactions = ({ count = 10 }) => {
             <ul className="divide-y divide-gray-200">
                 {transactions.map((txn, index) => (
                     <motion.li
-                        key={txn.id}
+                        key={txn.id || index}
                         className="flex justify-between items-center py-3"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
