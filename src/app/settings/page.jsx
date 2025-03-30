@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { useRouter } from 'next/navigation';
+import Profile from "@/Components/Profile";
+import SpendCategories from "@/Components/SpendCategories";
+import ToggleSwitch from "@/Components/ToogleSwitch";
 import API_BASE_URL from "../utils/apiConfig";
 
 export default () => {
@@ -10,122 +13,122 @@ export default () => {
 
     const router = useRouter();
     const [selectedTab, setSelectedTab] = useState("general");
-    const [user, setUser] = useState(null);
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        mobile: "",
+    const [settings, setSettings] = useState({
+        enableNotifications: true,
+        smartSpendingNotifications: false,
+        dailySummary: false,
+        weeklySummary: true,
+        hideDefaultSMSNotifications: false,
     });
+    const [user, setUser] = useState(null);
 
-    // Handle input changes
-    const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    // Handle profile update
-    const handleUpdateProfile = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/users/update/${user._id || user.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (response.ok) {
-                const updatedUser = await response.json();
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                setUser(updatedUser);
-                console.log("Profile updated successfully!");
-            } else {
-                console.log("Failed to update profile: " + response.error);
-            }
-        } catch (error) {
-            console.error("Error updating profile:", error);
-        }
-    };
-
+    // ✅ Fetch settings from backend
     useEffect(() => {
-        // This runs only on the client side
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser)); // Parse JSON if stored as an object
+        const fetchSettings = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
+                if (!response.ok) throw new Error("Failed to fetch settings");
+                const data = await response.json();
+                setSettings(data);
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+
+        fetchSettings();
+    }, []);
+
+    // ✅ Fetch user from localStorage on client-side only
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            setUser(storedUser);
         }
     }, []);
 
-    useEffect(() => {
-        if (user) {
-            setFormData({
-                name: user.name || "",
-                email: user.email || "",
-                mobile: user.mobile || "",
+    // Handle individual toggle updates
+    const handleToggle = (key, value) => {
+        setSettings((prevSettings) => ({
+            ...prevSettings,
+            [key]: value,
+        }));
+    };
+
+    // Function to save changes (send to backend)
+    const saveNotificationSettins = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/settings/save`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: user.id,
+                    settings: settings,
+                }),
             });
+            if (!response.ok) console.log("Failed to save settings: " + response.error);
+            console.log("Settings updated successfully!");
+        } catch (error) {
+            console.log("Error updating settings: " + error.message);
         }
-    }, [user]);
+    };
 
     const renderContent = () => {
         switch (selectedTab) {
             case "general":
                 return (
                     <>
-                        <div>
-                            <h2 className="text-xl font-semibold mb-4">Profile</h2>
-                            <p>
-                                Manage your general account settings, preferences, and more.
-                            </p>
-                        </div>
-
+                        <Profile />
                         <hr className="border-gray-300 my-4" />
-
-                        {/* Name */}
-                        <div className="flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
-                            <p className="text-md font-semibold">Full Name</p>
-                            <p className="text-md inline-flex items-center gap-2">{user && user.name || "John Doe"} <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
-                            </svg></p>
-                        </div>
-
-                        {/* Email */}
-                        <div className="pt-4 flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
-                            <p className="text-md font-semibold">Email ID</p>
-                            <p className="text-md inline-flex items-center gap-2">{user && user.email || "abc@example.com"} <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
-                            </svg></p>
-                        </div>
-
-                        {/* Mob No. */}
-                        <div className="pt-4 flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
-                            <p className="text-md font-semibold">Mob No.</p>
-                            <p className="text-md inline-flex items-center gap-2">{user && user.mobile || "1234567890"} <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
-                            </svg></p>
-                        </div>
-
+                        <SpendCategories />
                         <hr className="border-gray-300 my-4" />
-
                     </>
                 );
             case "security":
                 return (
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4">Security Settings</h2>
-                        <p>
-                            Update your security settings, passwords, and login details.
-                        </p>
-                    </div>
+                    <>
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">Security Settings</h2>
+                            <p>
+                                Update your security settings, passwords, and login details.
+                            </p>
+                        </div>
+                        <hr className="border-gray-300 my-4" />
+                    </>
                 );
             case "notifications":
                 return (
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4">Notification Settings</h2>
-                        <p>
-                            Manage your email, push, and SMS notification preferences.
-                        </p>
-                    </div>
+                    <>
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">Notification Settings</h2>
+                            <p>
+                                Manage your email, push, and SMS notification preferences.
+                            </p>
+                        </div>
+                        <hr className="border-gray-300 my-4" />
+                        {/* Enable Notifications */}
+                        <ToggleSwitch label="Enable Notifications" initialState={settings.enableNotifications}
+                            onToggle={(value) => handleToggle("enableNotifications", value)} />
+                        <hr className="border-gray-300 my-4" />
+                        {/* Smart Spending Notifications */}
+                        <ToggleSwitch label="Smart Spending Notifications" initialState={settings.smartSpendingNotifications}
+                            onToggle={(value) => handleToggle("smartSpendingNotifications", value)} />
+                        <hr className="border-gray-300 my-4" />
+                        {/* Daily Summary */}
+                        <ToggleSwitch label="Daily Summary" initialState={settings.dailySummary}
+                            onToggle={(value) => handleToggle("dailySummary}", value)} />
+                        <hr className="border-gray-300 my-4" />
+                        {/* Weekly Summary */}
+                        <ToggleSwitch label="Weekly Summary" initialState={settings.weeklySummary}
+                            onToggle={(value) => handleToggle("weeklySummary}", value)} />
+                        <hr className="border-gray-300 my-4" />
+                        {/* Hide Default SMS Notifications */}
+                        <ToggleSwitch label="Hide Default SMS Notifications" initialState={settings.hideDefaultSMSNotifications}
+                            onToggle={(value) => handleToggle("hideDefaultSMSNotifications}", value)} />
+                        <hr className="border-gray-300 my-4" />
+                        <div className="flex justify-end">
+                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer" onClick={saveNotificationSettins}>Save Changes</button>
+                        </div>
+                    </>
                 );
             default:
                 return (
@@ -175,46 +178,6 @@ export default () => {
 
     return (
         <>
-            {/* Edit Profile Modal */}
-            <div id="spendwise-edit-profile" tabIndex="-1" aria-hidden="true" aria-modal="true" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
-                <div className="relative p-4 w-full max-w-md max-h-full">
-                    {/* Modal content */}
-                    <div className="relative bg-white rounded-lg shadow-sm">
-                        {/* Modal header */}
-                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
-                            <h3 className="text-xl font-semibold text-gray-900">
-                                Update Profile
-                            </h3>
-                            <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-edit-profile">
-                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                </svg>
-                                <span className="sr-only">Close modal</span>
-                            </button>
-                        </div>
-
-                        {/* Modal body */}
-                        <div className="p-5 md:p-5">
-                            <form className="space-y-4" action="#">
-                                <div>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                                    <input name="name" id="name" type="text" onChange={handleInputChange} value={formData.name || ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                </div>
-                                <div>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                                    <input name="email" id="email" type="email" onChange={handleInputChange} value={formData.email || ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                </div>
-                                <div>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900">Mob No.</label>
-                                    <input name="mobile" id="mobile" type="number" onChange={handleInputChange} value={formData.mobile || ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                </div>
-                                <button type="button" onClick={handleUpdateProfile} className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Update</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
                 <div className="sidebar w-1/4 bg-gray-200 p-4 rounded-lg">
                     <ul>

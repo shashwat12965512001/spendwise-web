@@ -56,7 +56,7 @@ export default () => {
             <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 flex justify-between items-center">
                 <div>
                     <h3 className="text-3xl font-bold">
-                        Welcome back, <span>{user ? user.name.split(" ")[0] : "John"}</span>
+                        Welcome back, <span>{user && user.name.split(" ")[0] || "John"}</span>
                     </h3>
                     <p className="mt-2 text-gray-600">You're $150 away from savings goal. Keep going!</p>
                 </div>
@@ -67,7 +67,7 @@ export default () => {
                     </div>
 
                     <div className="font-medium">
-                        <div>{user ? user.name : "John Doe"}</div>
+                        <div>{user && user.name || "John Doe"}</div>
                         <div className="text-sm text-gray-500">{"Joined in " + getUserCreationDate(user)}</div>
                     </div>
                 </div>
