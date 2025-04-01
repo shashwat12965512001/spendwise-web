@@ -2,16 +2,15 @@
 
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import { useRouter } from 'next/navigation';
 import Profile from "@/Components/Profile";
 import SpendCategories from "@/Components/SpendCategories";
 import ToggleSwitch from "@/Components/ToogleSwitch";
 import API_BASE_URL from "../utils/apiConfig";
+import Sidebar from "@/Components/Sidebar";
 
 export default () => {
     useAuth();
 
-    const router = useRouter();
     const [selectedTab, setSelectedTab] = useState("general");
     const [settings, setSettings] = useState({
         enableNotifications: true,
@@ -21,6 +20,7 @@ export default () => {
         hideDefaultSMSNotifications: false,
     });
     const [user, setUser] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     // ✅ Fetch settings from backend
     useEffect(() => {
@@ -55,7 +55,7 @@ export default () => {
     };
 
     // Function to save changes (send to backend)
-    const saveNotificationSettins = async () => {
+    const saveNotificationSettings = async () => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/settings/save`, {
                 method: "POST",
@@ -126,7 +126,7 @@ export default () => {
                             onToggle={(value) => handleToggle("hideDefaultSMSNotifications}", value)} />
                         <hr className="border-gray-300 my-4" />
                         <div className="flex justify-end">
-                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer" onClick={saveNotificationSettins}>Save Changes</button>
+                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer" onClick={saveNotificationSettings}>Save Changes</button>
                         </div>
                     </>
                 );
@@ -142,73 +142,15 @@ export default () => {
         }
     };
 
-    const GeneralIcon = () => (
-        <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4H1m3 4H1m3 4H1m3 4H1m6.071.286a3.429 3.429 0 1 1 6.858 0M4 1h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Zm9 6.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
-        </svg>
-    );
-
-    const SecurityIcon = () => (
-        <svg className="h-6 w-6 text-gray-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <circle cx="12" cy="12" r="3" />  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
-    );
-
-    const NotificationsIcon = () => (
-        <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 21">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 3.464V1.1m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175C15 15.4 15 16 14.462 16H1.538C1 16 1 15.4 1 14.807c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 8 3.464ZM4.54 16a3.48 3.48 0 0 0 6.92 0H4.54Z"></path>
-        </svg>
-    );
-
-    const LogoutIcon = () => (
-        <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"></path>
-        </svg>
-    );
-
-    const handleLogout = () => {
-
-        // Remove user data and token from local storage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('user');
-
-        // Redirect to login page
-        router.push('/login');
-    };
-
     return (
         <>
             <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
-                <div className="sidebar w-1/4 bg-gray-200 p-4 rounded-lg">
-                    <ul>
-                        {[
-                            {
-                                key: "general", label: "General", icon: <GeneralIcon />
-                            },
-                            {
-                                key: "security", label: "Security", icon: <SecurityIcon />
-                            },
-                            {
-                                key: "notifications", label: "Notifications", icon: <NotificationsIcon />
-                            },
-                            {
-                                key: "logout", label: "Logout", icon: <LogoutIcon />
-                            },
-                        ].map(({ key, label, icon }) => (
-                            <li
-                                key={key}
-                                className={`flex gap-4 p-4 cursor-pointer rounded-xl transition ${selectedTab === key
-                                    ? "bg-gray-400"
-                                    : ""
-                                    }`}
-                                onClick={key == "logout" ? handleLogout : () => setSelectedTab(key)}
-                            >
-                                {icon}
-                                {label}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                <button id="sidebar-responsive-btn" className="lg:hidden p-3 bg-gray-700 text-white fixed top-16 left-0 z-50"
+                    onClick={() => setIsOpen(!isOpen)}>
+                    ☰
+                </button>
+
+                <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} isOpen={isOpen} setIsOpen={setIsOpen} />
                 <div className="content w-3/4 p-6 bg-white shadow rounded-lg">
                     <ul>
                         {renderContent()}

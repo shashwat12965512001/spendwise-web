@@ -4,6 +4,7 @@ import { FiPlus } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import API_BASE_URL from "../utils/apiConfig";
+import Papa from "papaparse";
 
 export default () => {
     useAuth();
@@ -159,6 +160,42 @@ export default () => {
         }
     };
 
+    const exportToCSV = (transactions) => {
+        if (!transactions || transactions.length === 0) {
+            alert("No transactions to export.");
+            return;
+        }
+
+        // Define CSV headers
+        const csvHeaders = ["Name", "Date", "Amount", "UPI ID", "Transaction ID", "Category"];
+
+        // Convert transactions array to CSV format
+        const csvData = transactions.map((txn) => ({
+            Name: txn.name || "N/A", // User's name (default "N/A" if not available)
+            Date: new Date(txn.date).toLocaleDateString(),
+            Amount: txn.amount,
+            "UPI ID": txn.upi_id || "N/A", // Handle cases where UPI ID is missing
+            "Transaction ID": txn.transaction_id || "N/A", // Handle missing transaction ID
+            Category: txn.expense_type || "Uncategorized",
+        }));
+
+        // Generate CSV
+        const csv = Papa.unparse({
+            fields: csvHeaders,
+            data: csvData,
+        });
+
+        // Create a downloadable CSV file
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "transactions.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <>
             {/* Edit Transaction Modal */}
@@ -275,57 +312,56 @@ export default () => {
             {/* Transaction History */}
             <div className="spendwise-transactions-screen mx-auto mt-8 max-w-screen-lg px-2">
                 {/* Upper section */}
-                <div className="sm:flex sm:items-center sm:justify-between flex-col sm:flex-row">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4">
                     <p className="flex-1 text-2xl font-bold text-gray-900">
                         Transaction History
                     </p>
-                    <div className="mt-4 sm:mt-0">
-                        <div className="flex items-center justify-start sm:justify-end">
-                            {/* Add new Expense */}
-                            <button id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer mr-4" data-modal-target="spendwise-add-new-expense" data-modal-toggle="spendwise-add-new-expense">
-                                <FiPlus size={18} /> Add New Expense
-                            </button>
+                    <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row sm:items-center gap-4">
+                        {/* Add new Expense */}
+                        <button id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer" data-modal-target="spendwise-add-new-expense" data-modal-toggle="spendwise-add-new-expense">
+                            <FiPlus size={18} /> Add New Expense
+                        </button>
 
-                            {/* Sort */}
-                            <div className="flex items-center">
-                                <label
-                                    htmlFor=""
-                                    className="mr-2 flex-shrink-0 text-sm font-medium text-gray-900"
-                                >
-                                    {" "}
-                                    Sort by:{" "}
-                                </label>
-                                <select
-                                    name=""
-                                    className="p-2 sm: mr-4 block w-full whitespace-pre rounded-lg bg-white p-1 pr-10 text-base outline-none focus:shadow sm:text-sm"
-                                >
-                                    <option className="whitespace-no-wrap text-sm">Recent</option>
-                                </select>
-                            </div>
-
-                            {/* Export to CSV */}
-                            <button
-                                type="button"
-                                className="inline-flex cursor-pointer items-center rounded-lg bg-white py-2 px-3 text-center text-sm font-medium text-gray-800 shadow hover:bg-gray-100 focus:shadow"
+                        {/* Sort */}
+                        <div className="flex items-center">
+                            <label
+                                htmlFor=""
+                                className="mr-2 flex-shrink-0 text-sm font-medium text-gray-900"
                             >
-                                <svg
-                                    className="mr-1 h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                        className=""
-                                    />
-                                </svg>
-                                Export to CSV
-                            </button>
+                                {" "}
+                                Sort by:{" "}
+                            </label>
+                            <select
+                                name=""
+                                className="p-2 block w-full sm:w-auto rounded-lg bg-white text-gray-900 text-sm focus:shadow"
+                            >
+                                <option className="whitespace-no-wrap text-sm">Recent</option>
+                            </select>
                         </div>
+
+                        {/* Export to CSV */}
+                        <button
+                            type="button"
+                            className="inline-flex cursor-pointer items-center rounded-lg bg-white py-2 px-3 text-center text-sm font-medium text-gray-800 shadow hover:bg-gray-100 focus:shadow"
+                            onClick={() => exportToCSV(transactions)}
+                        >
+                            <svg
+                                className="mr-1 h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    className=""
+                                />
+                            </svg>
+                            Export to CSV
+                        </button>
                     </div>
                 </div>
 
@@ -363,7 +399,7 @@ export default () => {
 
                             {transactions && transactions.length > 0 ? (
                                 transactions.map((transaction, index) => (
-                                    <tr key={index} className="">
+                                    <tr key={index} className="border-b last:border-b-0">
                                         {/* Name */}
                                         <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                             {transaction.name}

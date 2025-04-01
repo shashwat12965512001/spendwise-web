@@ -1,4 +1,5 @@
 import API_BASE_URL from "@/app/utils/apiConfig";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import { useState, useEffect } from "react";
 
 export default () => {
@@ -115,6 +116,8 @@ export default () => {
         }
     };
 
+    console.log(typeof categories);
+
     return (
         <>
             <div className="flex flex-row justify-between">
@@ -170,7 +173,7 @@ export default () => {
             <hr className="border-gray-300 my-4" />
 
             <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 text-gray-900">
-                {categories.map(({ _id, name, icon }, index) => (
+                {categories && (categories.map != undefined) && categories.map(({ _id, name, icon }, index) => (
                     <li
                         key={index}
                         className="flex items-center gap-2 p-3 bg-gray-100 rounded-lg shadow-sm hover:bg-gray-200 transition"
