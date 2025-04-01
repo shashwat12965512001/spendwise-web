@@ -6,7 +6,7 @@ export default () => {
 
                     {/* Logo Section */}
                     <div className="mb-6 md:mb-0 flex justify-center md:justify-start">
-                        <a href="#" className="flex items-center">
+                        <a href="/" className="flex items-center">
                             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                                 Spendwise
                             </span>
