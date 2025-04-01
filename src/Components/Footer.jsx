@@ -14,7 +14,7 @@ export default () => {
                     </div>
 
                     {/* Links Section */}
-                    <ul className="flex flex-col sm:flex-row sm:flex-wrap items-center text-center md:text-left text-sm font-medium text-gray-500 dark:text-gray-400 mb-6 sm:mb-0">
+                    <ul className="flex flex-row sm:flex-row sm:flex-wrap items-center text-center md:text-left text-sm font-medium text-gray-500 dark:text-gray-400 mb-6 sm:mb-0 justify-center">
                         <li>
                             <a href="#" className="mr-4 hover:underline md:mr-6">About</a>
                         </li>
