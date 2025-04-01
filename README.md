@@ -1,5 +1,4 @@
 <div class="markdown prose w-full break-words dark:prose-invert dark">
-  <hr data-start="88" data-end="91" class="" style="">
   <h3 data-start="93" data-end="142" class="">📌 <strong data-start="100" data-end="140">SpendWise - Expense &amp; Budget Tracker</strong></h3>
   <p data-start="144" data-end="391" class="">SpendWise is a powerful expense and budget tracking web application that helps users manage their finances effectively. It features real-time transaction tracking, graphical expense insights, and seamless integration with a companion mobile app.</p>
   <hr data-start="393" data-end="396" class="" style="">
@@ -40,19 +39,15 @@
   <h2 data-start="1361" data-end="1393" class="">🔧 <strong data-start="1367" data-end="1391">Installation &amp; Setup</strong></h2>
   <p data-start="1395" data-end="1422" class="">1️⃣ Clone the repository:</p>
   <pre class="!overflow-visible" data-start="1423" data-end="1511"><div class="contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute bottom-0 right-0 flex h-9 items-center pr-2"><div class="flex items-center rounded bg-token-sidebar-surface-primary px-2 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary"><span class="" data-state="closed"></span><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre language-bash"><span><span>git </span><span><span class="hljs-built_in">clone</span></span><span> https://github.com/yourusername/spendwise-web.git
-  </span><span><span class="hljs-built_in">cd</span></span><span> spendwise-web
-  </span></span></code></div></div></pre>
+  </span><span><span class="hljs-built_in">cd</span></span><span> spendwise-web</span></span></code></div></div></pre>
   <p data-start="1513" data-end="1540" class="">2️⃣ Install dependencies:</p>
-  <pre class="!overflow-visible" data-start="1541" data-end="1564"><div class="contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute bottom-0 right-0 flex h-9 items-center pr-2"><div class="flex items-center rounded bg-token-sidebar-surface-primary px-2 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary"><span class="" data-state="closed"></span><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre language-bash"><span><span>npm install
-  </span></span></code></div></div></pre>
+  <pre class="!overflow-visible" data-start="1541" data-end="1564"><div class="contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute bottom-0 right-0 flex h-9 items-center pr-2"><div class="flex items-center rounded bg-token-sidebar-surface-primary px-2 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary"><span class="" data-state="closed"></span><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre language-bash"><span><span>npm install</span></span></code></div></div></pre>
   <p data-start="1566" data-end="1656" class="">3️⃣ Set up environment variables:<br data-start="1599" data-end="1602">
   Create a <code data-start="1611" data-end="1623">.env.local</code> file and add your credentials:</p>
   <pre class="!overflow-visible" data-start="1657" data-end="1752"><div class="contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute bottom-0 right-0 flex h-9 items-center pr-2"><div class="flex items-center rounded bg-token-sidebar-surface-primary px-2 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary"><span class="" data-state="closed"></span><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre language-env"><span>NEXT_PUBLIC_API_URL=http://localhost:5000
-  MONGODB_URI=your_mongodb_connection_string
-  </span></code></div></div></pre>
+  MONGODB_URI=your_mongodb_connection_string</span></code></div></div></pre>
   <p data-start="1754" data-end="1787" class="">4️⃣ Run the development server:</p>
-  <pre class="!overflow-visible" data-start="1788" data-end="1811"><div class="contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute bottom-0 right-0 flex h-9 items-center pr-2"><div class="flex items-center rounded bg-token-sidebar-surface-primary px-2 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary"><span class="" data-state="closed"></span><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre language-bash"><span><span>npm run dev
-  </span></span></code></div></div></pre>
+  <pre class="!overflow-visible" data-start="1788" data-end="1811"><div class="contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute bottom-0 right-0 flex h-9 items-center pr-2"><div class="flex items-center rounded bg-token-sidebar-surface-primary px-2 font-sans text-xs text-token-text-secondary dark:bg-token-main-surface-secondary"><span class="" data-state="closed"></span><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre language-bash"><span><span>npm run dev</span></span></code></div></div></pre>
   <p data-start="1812" data-end="1867" class="">Visit <strong data-start="1818" data-end="1845"><code data-start="1820" data-end="1843">http://localhost:3000</code></strong> in your browser. 🚀</p>
   <hr data-start="1869" data-end="1872" class="">
   <h2 data-start="1874" data-end="1897" class="">📷 <strong data-start="1880" data-end="1895">Screenshots</strong></h2>
@@ -67,5 +62,4 @@
   <hr data-start="2165" data-end="2168" class="">
   <h3 data-start="2170" data-end="2194" class="">✨ <strong data-start="2176" data-end="2192">Developed By</strong></h3>
   <p data-start="2195" data-end="2241" class=""><a data-start="2195" data-end="2239" rel="noopener" target="_new" class="" href="https://github.com/shashwat12965512001">Shashwat Srivastava</a></p>
-  <hr data-start="2243" data-end="2246" class="">
 </div>
