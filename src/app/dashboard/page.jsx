@@ -1,7 +1,7 @@
 "use client";
 
-import Card from "../Components/Card";
-import { RecentTransactions } from "../Components/RecentTransactions";
+import Card from "@/components/Card";
+import { RecentTransactions } from "@/components/RecentTransactions";
 import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 
