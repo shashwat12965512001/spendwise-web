@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import Profile from "@/Components/Profile";
-import SpendCategories from "@/Components/SpendCategories";
-import ToggleSwitch from "@/Components/ToogleSwitch";
+import Profile from "../Components/Profile";
+import SpendCategories from "../Components/SpendCategories";
+import ToggleSwitch from "../Components/ToogleSwitch";
 import API_BASE_URL from "../utils/apiConfig";
-import Sidebar from "@/Components/Sidebar";
+import Sidebar from "../Components/Sidebar";
 
 export default () => {
     useAuth();
