@@ -27,6 +27,7 @@ export default () => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
             });
 
@@ -51,6 +52,7 @@ export default () => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
             });
 
@@ -75,6 +77,7 @@ export default () => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify(editTransaction),
             });
@@ -122,6 +125,7 @@ export default () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify(expense),
             });

@@ -28,6 +28,7 @@ export default function Profile() {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify(formData),
             });

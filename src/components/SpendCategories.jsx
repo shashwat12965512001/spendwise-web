@@ -62,6 +62,7 @@ export default () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify({ name: newCategory, icon: newIcon }),
             });
@@ -97,6 +98,7 @@ export default () => {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
+                    "bypass-tunnel-reminder": "true",
                 },
             });
 
