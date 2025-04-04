@@ -62,7 +62,6 @@ export default () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify({ name: newCategory, icon: newIcon }),
             });
@@ -82,6 +81,7 @@ export default () => {
             setNewCategory("");
             setNewIcon("");
             closeModal();
+            window.location.reload();
         } catch (error) {
             console.error("Error adding category:", error);
             alert("Something went wrong. Please try again.");
@@ -98,7 +98,6 @@ export default () => {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
             });
 

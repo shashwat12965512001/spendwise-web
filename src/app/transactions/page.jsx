@@ -12,7 +12,7 @@ export default () => {
     // State to store transactions
     const [transactions, setTransactions] = useState([]);
     const [editTransaction, setEditTransaction] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         fetchTransactions();
@@ -27,7 +27,6 @@ export default () => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
             });
 
@@ -52,7 +51,6 @@ export default () => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
             });
 
@@ -77,7 +75,6 @@ export default () => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify(editTransaction),
             });
@@ -89,7 +86,8 @@ export default () => {
 
             // Update the transaction in state
             setTransactions(transactions.map((t) => (t._id === updatedTransaction._id ? updatedTransaction : t)));
-            setShowModal(false);
+
+            // window.location.reload();
         } catch (error) {
             console.error("Error updating transaction:", error);
         }
@@ -97,7 +95,7 @@ export default () => {
 
     const openEditModal = (transaction) => {
         setEditTransaction(transaction);
-        setShowModal(true);
+        setIsModalOpen(true);
     };
 
     // State to store form data
@@ -125,7 +123,6 @@ export default () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify(expense),
             });
@@ -141,7 +138,9 @@ export default () => {
             setExpense({ name: "", date: "", amount: "", category: "", expense_type: "", upi_id: "", transaction_id: "" });
 
             // Close the modal (optional)
-            document.getElementById("spendwise-add-new-expense").classList.add("hidden");
+            closeModal("spendwise-add-new-expense");
+
+            window.location.reload();
         } catch (error) {
             console.error("Error:", error);
         }
@@ -200,69 +199,68 @@ export default () => {
         document.body.removeChild(link);
     };
 
-    const openModal = () => {
-        const modal = document.getElementById('spendwise-add-new-expense');
+    const openModal = (id) => {
+        const modal = document.getElementById(id);
         modal?.classList.remove('hidden');
         modal?.classList.add('flex'); // If you're using flexbox to center
     };
 
-    const closeModal = () => {
-        const modal = document.getElementById('spendwise-add-new-expense');
+    const closeModal = (id) => {
+        const modal = document.getElementById(id);
         modal?.classList.remove('flex');
         modal?.classList.add('hidden');
+        setIsModalOpen(false);
     };
-
 
     return (
         <>
             {/* Edit Transaction Modal */}
-            {showModal && (
-                <div id="spendwise-update-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 overflow-y-auto fixed inset-0 z-50 flex justify-center items-center w-full h-full">
-                    <div className="relative p-4 w-full max-w-md max-h-full">
-                        {/* Modal content */}
-                        <div className="relative bg-white rounded-lg shadow-sm">
-                            {/* Modal header */}
-                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
-                                <h3 className="text-xl font-semibold text-gray-900">
-                                    Edit Transaction
-                                </h3>
-                                <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-update-expense">
-                                    <svg className="w-3 h-3" onClick={() => setShowModal(false)} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                    </svg>
-                                    <span className="sr-only">Close modal</span>
-                                </button>
-                            </div>
-                            {/* Modal body */}
-                            <div className="p-5 md:p-5">
-                                <form className="space-y-4" action="#">
-                                    <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                                        <input type="text" value={editTransaction.name} onChange={(e) => setEditTransaction({ ...editTransaction, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900">Date</label>
-                                        <input type="text" value={new Date(editTransaction.date).toLocaleDateString()} onChange={(e) => setEditTransaction({ ...editTransaction, date: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900">Amount</label>
-                                        <input type="number" value={editTransaction.amount} onChange={(e) => setEditTransaction({ ...editTransaction, amount: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900">UPI ID</label>
-                                        <input type="text" value={editTransaction.upi_id} onChange={(e) => setEditTransaction({ ...editTransaction, upi_id: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900">Transaction ID</label>
-                                        <input type="text" value={editTransaction.transaction_id} onChange={(e) => setEditTransaction({ ...editTransaction, transaction_id: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                                    </div>
-                                    <button type="button" onClick={updateTransaction} className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Update</button>
-                                </form>
-                            </div>
+            <div id="spendwise-update-expense" tabIndex="-1" className={`${isModalOpen ? "flex" : "hidden"} bg-gray-400 bg-opacity-50 overflow-y-auto overflow-x-hidden absolute top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}>
+                <div className="relative p-4 w-full max-w-md max-h-full">
+                    {/* Modal content */}
+                    <div className="relative bg-white rounded-lg shadow-sm">
+                        {/* Modal header */}
+                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+                            <h3 className="text-xl font-semibold text-gray-900">
+                                Edit Transaction
+                            </h3>
+                            <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                                <svg className="w-3 h-3" onClick={() => closeModal('spendwise-update-expense')}
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span className="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        {/* Modal body */}
+                        <div className="p-5 md:p-5">
+                            <form className="space-y-4" action="#">
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                                    <input type="text" value={editTransaction && editTransaction.name || ""} onChange={(e) => setEditTransaction({ ...editTransaction, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                </div>
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                                    <input type="text" value={new Date(editTransaction && editTransaction.date || "").toLocaleDateString()} onChange={(e) => setEditTransaction({ ...editTransaction, date: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                </div>
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">Amount</label>
+                                    <input type="number" value={editTransaction && editTransaction.amount || ""} onChange={(e) => setEditTransaction({ ...editTransaction, amount: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                </div>
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">UPI ID</label>
+                                    <input type="text" value={editTransaction && editTransaction.upi_id || ""} onChange={(e) => setEditTransaction({ ...editTransaction, upi_id: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                </div>
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">Transaction ID</label>
+                                    <input type="text" value={editTransaction && editTransaction.transaction_id || ""} onChange={(e) => setEditTransaction({ ...editTransaction, transaction_id: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                </div>
+                                <button type="button" onClick={updateTransaction} className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Update</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Add new Expense Modal */}
             <div id="spendwise-add-new-expense" tabIndex="-1" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden absolute top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
@@ -274,7 +272,7 @@ export default () => {
                             <h3 className="text-xl font-semibold text-gray-900">
                                 Add new Expense
                             </h3>
-                            <button onClick={closeModal} type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-add-new-expense">
+                            <button onClick={() => { () => { closeModal("spendwise-add-new-expense") } }} type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-add-new-expense">
                                 <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
@@ -335,7 +333,7 @@ export default () => {
                     </p>
                     <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row sm:items-center gap-4">
                         {/* Add new Expense */}
-                        <button onClick={openModal} id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer" data-modal-target="spendwise-add-new-expense" data-modal-toggle="spendwise-add-new-expense">
+                        <button onClick={() => { openModal("spendwise-add-new-expense") }} id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer" data-modal-target="spendwise-add-new-expense" data-modal-toggle="spendwise-add-new-expense">
                             <FiPlus size={18} /> Add New Expense
                         </button>
 
@@ -459,7 +457,7 @@ export default () => {
 
                                         <td className="whitespace-nowrap py-4 text-sm font-medium text-gray-500 sm:px-6 flex gap-2">
                                             {/* Edit Icon */}
-                                            <svg className="cursor-pointer h-5 w-5 text-yellow-500" onClick={() => openEditModal(transaction)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                                            <svg className="cursor-pointer h-5 w-5 text-yellow-500" onClick={() => openEditModal(transaction)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
 
                                             {/* Delete Icon */}
                                             <svg className="cursor-pointer h-5 w-5 text-red-500" onClick={() => deleteTransaction(transaction._id)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <polyline points="3 6 5 6 21 6" />  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />  <line x1="10" y1="11" x2="10" y2="17" />  <line x1="14" y1="11" x2="14" y2="17" /></svg>

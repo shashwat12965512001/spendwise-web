@@ -28,7 +28,6 @@ export default function Profile() {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "bypass-tunnel-reminder": "true",
                 },
                 body: JSON.stringify(formData),
             });
@@ -37,7 +36,9 @@ export default function Profile() {
                 const updatedUser = await response.json();
                 localStorage.setItem("user", JSON.stringify(updatedUser));
                 setUser(updatedUser);
+                closeModal("spendwise-edit-profile");
                 console.log("Profile updated successfully!");
+                window.location.reload();
             } else {
                 console.log("Failed to update profile: " + response.error);
             }
@@ -64,13 +65,25 @@ export default function Profile() {
         }
     }, [user]);
 
+    const openModal = (id) => {
+        const modal = document.getElementById(id);
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex'); // If you're using flexbox to center
+    };
+
+    const closeModal = (id) => {
+        const modal = document.getElementById(id);
+        modal?.classList.remove('flex');
+        modal?.classList.add('hidden');
+    };
+
     return (
         <>
 
             {/* Edit Profile Modal */}
             <div
                 id="spendwise-edit-profile"
-                className="bg-gray-400 bg-opacity-50 hidden overflow-y-scroll fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full flex"
+                tabIndex="-1" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden absolute top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full"
             >
                 <div className="relative p-4 w-full max-w-md max-h-full">
                     {/* Modal content */}
@@ -80,8 +93,8 @@ export default function Profile() {
                             <h3 className="text-xl font-semibold text-gray-900">
                                 Update Profile
                             </h3>
-                            <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-edit-profile">
-                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <button type="button" onClick={() => { closeModal("spendwise-edit-profile") }} className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-edit-profile">
+                                <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
                                 <span className="sr-only">Close modal</span>
@@ -110,7 +123,6 @@ export default function Profile() {
                 </div>
             </div>
 
-
             <div>
                 <h2 className="text-xl font-semibold mb-4">Profile</h2>
                 <p>
@@ -123,7 +135,7 @@ export default function Profile() {
             {/* Name */}
             <div className="flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
                 <p className="text-md font-semibold">Full Name</p>
-                <p className="text-md inline-flex items-center gap-2">{user && user.name || "John Doe"} <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                <p className="text-md inline-flex items-center gap-2">{user && user.name || "John Doe"} <svg className="w-4 h-4 text-gray-800" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
                 </svg></p>
             </div>
@@ -131,7 +143,7 @@ export default function Profile() {
             {/* Email */}
             <div className="pt-4 flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
                 <p className="text-md font-semibold">Email ID</p>
-                <p className="text-md inline-flex items-center gap-2">{user && user.email || "abc@example.com"} <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                <p className="text-md inline-flex items-center gap-2">{user && user.email || "abc@example.com"} <svg className="w-4 h-4 text-gray-800" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
                 </svg></p>
             </div>
@@ -139,7 +151,7 @@ export default function Profile() {
             {/* Mob No. */}
             <div className="pt-4 flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
                 <p className="text-md font-semibold">Mob No.</p>
-                <p className="text-md inline-flex items-center gap-2">{user && user.mobile || "1234567890"} <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                <p className="text-md inline-flex items-center gap-2">{user && user.mobile || "1234567890"} <svg className="w-4 h-4 text-gray-800" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
                 </svg></p>
             </div>
