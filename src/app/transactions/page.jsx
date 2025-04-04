@@ -200,11 +200,24 @@ export default () => {
         document.body.removeChild(link);
     };
 
+    const openModal = () => {
+        const modal = document.getElementById('spendwise-add-new-expense');
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex'); // If you're using flexbox to center
+    };
+
+    const closeModal = () => {
+        const modal = document.getElementById('spendwise-add-new-expense');
+        modal?.classList.remove('flex');
+        modal?.classList.add('hidden');
+    };
+
+
     return (
         <>
             {/* Edit Transaction Modal */}
             {showModal && (
-                <div id="spendwise-update-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
+                <div id="spendwise-update-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 overflow-y-auto fixed inset-0 z-50 flex justify-center items-center w-full h-full">
                     <div className="relative p-4 w-full max-w-md max-h-full">
                         {/* Modal content */}
                         <div className="relative bg-white rounded-lg shadow-sm">
@@ -252,7 +265,7 @@ export default () => {
             )}
 
             {/* Add new Expense Modal */}
-            <div id="spendwise-add-new-expense" tabIndex="-1" aria-hidden="true" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
+            <div id="spendwise-add-new-expense" tabIndex="-1" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden absolute top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
                 <div className="relative p-4 w-full max-w-md max-h-full">
                     {/* Modal content */}
                     <div className="relative bg-white rounded-lg shadow-sm">
@@ -261,8 +274,8 @@ export default () => {
                             <h3 className="text-xl font-semibold text-gray-900">
                                 Add new Expense
                             </h3>
-                            <button type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-add-new-expense">
-                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <button onClick={closeModal} type="button" className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="spendwise-add-new-expense">
+                                <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
                                 <span className="sr-only">Close modal</span>
@@ -322,7 +335,7 @@ export default () => {
                     </p>
                     <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row sm:items-center gap-4">
                         {/* Add new Expense */}
-                        <button id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer" data-modal-target="spendwise-add-new-expense" data-modal-toggle="spendwise-add-new-expense">
+                        <button onClick={openModal} id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer" data-modal-target="spendwise-add-new-expense" data-modal-toggle="spendwise-add-new-expense">
                             <FiPlus size={18} /> Add New Expense
                         </button>
 
