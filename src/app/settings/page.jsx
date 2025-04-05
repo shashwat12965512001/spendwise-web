@@ -147,11 +147,6 @@ export default () => {
     return (
         <>
             <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
-                <button id="sidebar-responsive-btn" className="lg:hidden p-3 bg-gray-700 text-white fixed top-16 left-0 z-50"
-                    onClick={() => setIsOpen(!isOpen)}>
-                    ☰
-                </button>
-
                 <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} isOpen={isOpen} setIsOpen={setIsOpen} />
                 <div className="content w-3/4 p-6 bg-white shadow rounded-lg">
                     <ul>

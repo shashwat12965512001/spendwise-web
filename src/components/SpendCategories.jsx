@@ -1,5 +1,4 @@
 import API_BASE_URL from "../app/utils/apiConfig";
-import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import { useState, useEffect } from "react";
 
 export default () => {

@@ -79,15 +79,17 @@ export default () => {
                 body: JSON.stringify(editTransaction),
             });
 
+            console.log("editTransaction:", JSON.stringify(editTransaction, null, 2));
             const updatedTransaction = await response.json();
+            console.log("updatedTransaction:", JSON.stringify(updatedTransaction, null, 2));
             if (!response.ok) {
                 console.log("Failed to update transaction");
             }
 
             // Update the transaction in state
-            setTransactions(transactions.map((t) => (t._id === updatedTransaction._id ? updatedTransaction : t)));
+            setTransactions(transactions.map((t) => (t._id === updatedTransaction._id ? updatedTransaction.transaction : t)));
 
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
             console.error("Error updating transaction:", error);
         }
@@ -245,7 +247,10 @@ export default () => {
                                 </div>
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900">Amount</label>
-                                    <input type="number" value={editTransaction && editTransaction.amount || ""} onChange={(e) => setEditTransaction({ ...editTransaction, amount: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    <input type="number" value={editTransaction && editTransaction.amount || ""} onChange={(e) => setEditTransaction({
+                                        ...editTransaction,
+                                        amount: parseFloat(e.target.value)
+                                    })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                 </div>
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900">UPI ID</label>

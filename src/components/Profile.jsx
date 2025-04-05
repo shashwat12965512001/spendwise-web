@@ -34,10 +34,8 @@ export default function Profile() {
 
             if (response.ok) {
                 const updatedUser = await response.json();
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                setUser(updatedUser);
-                closeModal("spendwise-edit-profile");
-                console.log("Profile updated successfully!");
+                localStorage.setItem("user", JSON.stringify(updatedUser.user));
+                setUser(updatedUser.user);
                 window.location.reload();
             } else {
                 console.log("Failed to update profile: " + response.error);
@@ -133,25 +131,25 @@ export default function Profile() {
             <hr className="border-gray-300 my-4" />
 
             {/* Name */}
-            <div className="flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
+            <div className="flex flex-row justify-between" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
                 <p className="text-md font-semibold">Full Name</p>
-                <p className="text-md inline-flex items-center gap-2">{user && user.name || "John Doe"} <svg className="w-4 h-4 text-gray-800" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                <p className="text-md inline-flex items-center gap-2">{user?.name || "John Doe"} <svg className="w-4 h-4 text-gray-800 cursor-pointer" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
                 </svg></p>
             </div>
 
             {/* Email */}
-            <div className="pt-4 flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
+            <div className="pt-4 flex flex-row justify-between" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
                 <p className="text-md font-semibold">Email ID</p>
-                <p className="text-md inline-flex items-center gap-2">{user && user.email || "abc@example.com"} <svg className="w-4 h-4 text-gray-800" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                <p className="text-md inline-flex items-center gap-2">{user?.email || "abc@example.com"} <svg className="w-4 h-4 text-gray-800 cursor-pointer" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
                 </svg></p>
             </div>
 
             {/* Mob No. */}
-            <div className="pt-4 flex flex-row justify-between cursor-pointer" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
+            <div className="pt-4 flex flex-row justify-between" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
                 <p className="text-md font-semibold">Mob No.</p>
-                <p className="text-md inline-flex items-center gap-2">{user && user.mobile || "1234567890"} <svg className="w-4 h-4 text-gray-800" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                <p className="text-md inline-flex items-center gap-2">{user?.mobile || "1234567890"} <svg className="w-4 h-4 text-gray-800 cursor-pointer" onClick={() => { openModal("spendwise-edit-profile") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"></path>
                 </svg></p>
             </div>
