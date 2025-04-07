@@ -95,6 +95,14 @@ export default () => {
                             </p>
                         </div>
                         <hr className="border-gray-300 my-4" />
+
+                        {/* Name */}
+                        <div className="flex flex-row justify-between" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
+                            <p className="text-md font-semibold">Change Password</p>
+                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">Change</button>
+                        </div>
+
+                        <hr className="border-gray-300 my-4" />
                     </>
                 );
             case "notifications":
