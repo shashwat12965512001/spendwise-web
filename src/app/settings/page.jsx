@@ -21,6 +21,12 @@ export default () => {
     });
     const [user, setUser] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const [password, setPassword] = useState({
+        current_password: "",
+        new_password: "",
+    });
 
     // ✅ Fetch settings from backend
     useEffect(() => {
@@ -29,6 +35,7 @@ export default () => {
                 const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
                 if (!response.ok) throw new Error("Failed to fetch settings");
                 const data = await response.json();
+                console.log("data: " + JSON.stringify(data));
                 setSettings(data);
             } catch (err) {
                 console.log(err.message);
@@ -74,6 +81,49 @@ export default () => {
         }
     };
 
+    const openModal = (id) => {
+        console.log("openModal called with id:", id);
+        const modal = document.getElementById(id);
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex'); // If you're using flexbox to center
+    };
+
+    const closeModal = (id) => {
+        console.log("closeModal called with id:", id);
+        const modal = document.getElementById(id);
+        modal?.classList.remove('flex');
+        modal?.classList.add('hidden');
+    };
+
+    const handleChange = (e) => {
+        setPassword({ ...password, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(password);
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/users/update-password`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(password),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                setError(data.error);
+                return;
+            }
+            setSuccess(data.message);
+            setPassword({ current_password: "", new_password: "" });
+            closeModal("spendwise-change-password");
+        } catch (error) {
+            console.error("Error updating password:", error);
+        }
+    }
+
     const renderContent = () => {
         switch (selectedTab) {
             case "general":
@@ -88,21 +138,95 @@ export default () => {
             case "security":
                 return (
                     <>
+                        <div id="spendwise-change-password" tabIndex="-1" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden absolute top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
+                            <div className="relative p-4 w-full max-w-md max-h-full">
+                                <div className="relative bg-white rounded-lg shadow-sm">
+                                    {/* Modal header */}
+                                    <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+                                        <h3 className="text-xl font-semibold text-gray-900">
+                                            Change Password
+                                        </h3>
+                                        <button onClick={() => closeModal("spendwise-change-password")} className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                                            <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                            <span className="sr-only">Close modal</span>
+                                        </button>
+                                    </div>
+                                    {/* Modal body */}
+                                    <div className="p-5 md:p-5">
+                                        <form className="space-y-4" action="#" onSubmit={handleSubmit}>
+                                            <div>
+                                                <label htmlFor="current_password" className="block mb-2 text-sm font-medium text-gray-900">Current Password</label>
+                                                <input type="password" onChange={handleChange} name="current_password" id="current_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                            </div>
+                                            <div>
+                                                <label htmlFor="new_password" className="block mb-2 text-sm font-medium text-gray-900">New Password</label>
+                                                <input type="password" onChange={handleChange} name="new_password" id="new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                            </div>
+                                            <div>
+                                                <label htmlFor="confirm-new-password" className="block mb-2 text-sm font-medium text-gray-900">Confirm New Password</label>
+                                                <input type="password" name="confirm-new-password" id="confirm-new-password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => {
+                                                    // check with password and confirm password
+                                                    const newPassword = document.getElementById("new_password").value;
+                                                    const confirmPassword = e.target.value;
+                                                    if (newPassword !== confirmPassword) {
+                                                        setError("Passwords do not match");
+                                                    } else {
+                                                        setError(false);
+                                                    }
+                                                }} required />
+                                            </div>
+                                            <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Update</button>
+                                            {/* Error Message */}
+                                            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                                            {/* Success Message */}
+                                            {success && <p className="text-green-500 text-sm mt-1">{success}</p>}
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Security Settings Section */}
                         <div>
                             <h2 className="text-xl font-semibold mb-4">Security Settings</h2>
                             <p>
                                 Update your security settings, passwords, and login details.
                             </p>
                         </div>
+
                         <hr className="border-gray-300 my-4" />
 
-                        {/* Name */}
-                        <div className="flex flex-row justify-between" data-modal-target="spendwise-edit-profile" data-modal-toggle="spendwise-edit-profile">
+                        {/* Change Password */}
+                        <div className="flex flex-row justify-between">
                             <p className="text-md font-semibold">Change Password</p>
-                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">Change</button>
+                            <button onClick={() => openModal("spendwise-change-password")} className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">Change</button>
                         </div>
 
                         <hr className="border-gray-300 my-4" />
+
+                        {/* Two-Factor Authentication */}
+                        <div className="flex flex-row justify-between">
+                            <p className="text-md font-semibold">Two-Factor Authentication</p>
+                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">Enable</button>
+                        </div>
+
+                        <hr className="border-gray-300 my-4" />
+
+                        {/* Security Questions */}
+                        <div className="flex flex-row justify-between">
+                            <p className="text-md font-semibold">Security Questions</p>
+                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">Update</button>
+                        </div>
+
+                        <hr className="border-gray-300 my-4" />
+
+                        {/* Login History */}
+                        <div className="flex flex-row justify-between">
+                            <p className="text-md font-semibold">Login History</p>
+                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">View</button>
+                        </div>
                     </>
                 );
             case "notifications":
@@ -125,15 +249,15 @@ export default () => {
                         <hr className="border-gray-300 my-4" />
                         {/* Daily Summary */}
                         <ToggleSwitch label="Daily Summary" initialState={settings.dailySummary}
-                            onToggle={(value) => handleToggle("dailySummary}", value)} />
+                            onToggle={(value) => handleToggle("dailySummary", value)} />
                         <hr className="border-gray-300 my-4" />
                         {/* Weekly Summary */}
                         <ToggleSwitch label="Weekly Summary" initialState={settings.weeklySummary}
-                            onToggle={(value) => handleToggle("weeklySummary}", value)} />
+                            onToggle={(value) => handleToggle("weeklySummary", value)} />
                         <hr className="border-gray-300 my-4" />
                         {/* Hide Default SMS Notifications */}
                         <ToggleSwitch label="Hide Default SMS Notifications" initialState={settings.hideDefaultSMSNotifications}
-                            onToggle={(value) => handleToggle("hideDefaultSMSNotifications}", value)} />
+                            onToggle={(value) => handleToggle("hideDefaultSMSNotifications", value)} />
                         <hr className="border-gray-300 my-4" />
                         <div className="flex justify-end">
                             <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer" onClick={saveNotificationSettings}>Save Changes</button>
