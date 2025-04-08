@@ -27,6 +27,10 @@ export default () => {
         current_password: "",
         new_password: "",
     });
+    const [loginHistory, setLoginHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const userId = user?.id;
 
     // ✅ Fetch settings from backend
     useEffect(() => {
@@ -52,6 +56,25 @@ export default () => {
             setUser(storedUser);
         }
     }, []);
+
+    useEffect(() => {
+        const fetchLoginHistory = async () => {
+            try {
+                const res = await fetch(`/api/users/${userId}/login-history`);
+                const data = await res.json();
+
+                if (res.ok) {
+                    setLoginHistory(data.loginHistory || []);
+                } else {
+                    console.log(data.error || "Failed to load login history.");
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        if (userId) fetchLoginHistory();
+    }, [userId]);
 
     // Handle individual toggle updates
     const handleToggle = (key, value) => {
@@ -286,98 +309,94 @@ export default () => {
                         </ul>
                     </div>
                     <div id="login-history" className="w-3/4 p-6 bg-white shadow rounded-lg mt-4">
-                        <h2 className="text-xl font-semibold mb-4">Login History</h2>
-                        <p>
-                            View your recent login history, including dates, times, and locations.
-                        </p>
-                        <hr className="border-gray-300 my-4" />
-                        <div className="flex flex-row justify-between">
-                            <p className="text-md font-semibold">Recent Logins</p>
-                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">View All</button>
-                        </div>
-                        <hr className="border-gray-300 my-4" />
                         {/* Table */}
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                                 <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white">
-                                    Our products
-                                    <p className="mt-1 text-sm font-normal text-gray-500">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p>
+                                    Login History
+                                    <p className="mt-1 text-sm font-normal text-gray-500">View your recent login history, including dates, times, and locations.</p>
                                 </caption>
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" className="px-6 py-3">
-                                            Product name
+                                            Device
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Color
+                                            Location
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Category
+                                            Date
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Price
+                                            Time
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            <span className="sr-only">Edit</span>
+                                        <th scope="col" className="px-6 py-3 text-right">
+                                            Action
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="bg-white border-b border-gray-200">
+                                    {loading ? (
+                                        <tr>
+                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-500">Loading...</td>
+                                        </tr>
+                                    ) : error ? (
+                                        <tr>
+                                            <td colSpan="5" className="px-6 py-4 text-center text-red-500">{error}</td>
+                                        </tr>
+                                    ) : loginHistory.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-400">No login history found.</td>
+                                        </tr>
+                                    ) : (
+                                        loginHistory.map((entry, index) => {
+                                            const date = new Date(entry.timestamp);
+                                            const formattedDate = date.toLocaleDateString();
+                                            const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                                            return (
+                                                <tr key={index} className="bg-white border-b">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                        {entry.device || "Unknown"}
+                                                    </th>
+                                                    <td className="px-6 py-4">
+                                                        {entry.location || "Unknown"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {formattedDate}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {formattedTime}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-right">
+                                                        <button className="font-medium text-blue-600 hover:underline cursor-pointer">
+                                                            View
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    )}
+                                    {/* <tr className="bg-white border-b">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Apple MacBook Pro 17"
+                                            Desktop
                                         </th>
                                         <td className="px-6 py-4">
-                                            Silver
+                                            Home
                                         </td>
                                         <td className="px-6 py-4">
-                                            Laptop
+                                            2023-08-15
                                         </td>
                                         <td className="px-6 py-4">
-                                            $2999
+                                            10:00 AM
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <a href="#" className="font-medium text-blue-600 hover:underline">Edit</a>
+                                            <button className="font-medium text-blue-600 hover:underline cursor-pointer">View</button>
                                         </td>
-                                    </tr>
-                                    <tr className="bg-white border-b border-gray-200">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Microsoft Surface Pro
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            White
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            Laptop PC
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            $1999
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <a href="#" className="font-medium text-blue-600 hover:underline">Edit</a>
-                                        </td>
-                                    </tr>
-                                    <tr className="bg-white">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Magic Mouse 2
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            Black
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            Accessories
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            $99
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <a href="#" className="font-medium text-blue-600 hover:underline">Edit</a>
-                                        </td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
