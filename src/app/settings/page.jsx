@@ -60,7 +60,7 @@ export default () => {
     useEffect(() => {
         const fetchLoginHistory = async () => {
             try {
-                const res = await fetch(`/api/users/${userId}/login-history`);
+                const res = await fetch(`${API_BASE_URL}/api/users/${userId}/login-history`);
                 const data = await res.json();
 
                 if (res.ok) {
