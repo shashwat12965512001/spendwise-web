@@ -101,7 +101,6 @@ export default () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(password);
         try {
             const response = await fetch(`${API_BASE_URL}/api/users/update-password`, {
                 method: "POST",
@@ -117,8 +116,8 @@ export default () => {
                 return;
             }
             setSuccess(data.message);
-            setPassword({ current_password: "", new_password: "" });
-            closeModal("spendwise-change-password");
+            setError(false);
+            document.getElementById("logout").click();
         } catch (error) {
             console.error("Error updating password:", error);
         }

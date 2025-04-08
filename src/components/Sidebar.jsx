@@ -58,6 +58,7 @@ const Sidebar = ({ isOpen, setIsOpen, selectedTab, setSelectedTab }) => {
                     { key: "logout", label: "Logout", icon: <LogoutIcon /> },
                 ].map(({ key, label, icon }) => (
                     <li
+                        id={key}
                         key={key}
                         className={`flex gap-4 p-4 cursor-pointer rounded-xl transition ${selectedTab === key ? "bg-gray-400" : ""}`}
                         onClick={() => { handleMenuClick(key) }}
