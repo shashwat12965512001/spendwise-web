@@ -332,37 +332,41 @@ export default () => {
             {/* Transaction History */}
             <div className="spendwise-transactions-screen mx-auto mt-8 max-w-screen-lg px-2">
                 {/* Upper section */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4">
-                    <p className="flex-1 text-2xl font-bold text-gray-900">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4">
+                    {/* Heading */}
+                    <p className="text-2xl font-bold text-gray-900 sm:flex-1 text-center sm:text-left">
                         Transaction History
                     </p>
-                    <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row sm:items-center gap-4">
+
+                    {/* Actions Section */}
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4 w-full sm:w-auto">
+
                         {/* Add new Expense */}
-                        <button onClick={() => { openModal("spendwise-add-new-expense") }} id="add-new-expense" className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer">
+                        <button
+                            onClick={() => openModal("spendwise-add-new-expense")}
+                            id="add-new-expense"
+                            className="w-full sm:w-auto bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2"
+                        >
                             <FiPlus size={18} /> Add New Expense
                         </button>
 
                         {/* Sort */}
-                        <div className="flex items-center">
-                            <label
-                                htmlFor=""
-                                className="mr-2 flex-shrink-0 text-sm font-medium text-gray-900"
-                            >
-                                {" "}
-                                Sort by:{" "}
+                        <div className="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto">
+                            <label className="text-sm font-medium text-gray-900 mb-1 sm:mb-0 sm:mr-2">
+                                Sort by:
                             </label>
                             <select
-                                name=""
-                                className="p-2 block w-full sm:w-auto rounded-lg bg-white text-gray-900 text-sm focus:shadow"
+                                className="p-2 rounded-lg bg-white text-gray-900 text-sm shadow w-full sm:w-auto"
                             >
-                                <option className="whitespace-no-wrap text-sm">Recent</option>
+                                <option>Recent</option>
+                                {/* Add more options here if needed */}
                             </select>
                         </div>
 
                         {/* Export to CSV */}
                         <button
                             type="button"
-                            className="inline-flex cursor-pointer items-center rounded-lg bg-white py-2 px-3 text-center text-sm font-medium text-gray-800 shadow hover:bg-gray-100 focus:shadow"
+                            className="inline-flex items-center justify-center w-full sm:w-auto rounded-lg bg-white py-2 px-3 text-sm font-medium text-gray-800 shadow hover:bg-gray-100"
                             onClick={() => exportToCSV(transactions)}
                         >
                             <svg
@@ -377,7 +381,6 @@ export default () => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                    className=""
                                 />
                             </svg>
                             Export to CSV
@@ -387,95 +390,95 @@ export default () => {
 
                 {/* Table */}
                 <div className="mt-6 overflow-hidden rounded-xl bg-white shadow">
-                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2">
-                        <thead className="hidden border-b lg:table-header-group">
-                            <tr>
-                                <td
-                                    className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6"
-                                >
-                                    Name
-                                </td>
-                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
-                                    Date
-                                </td>
-                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
-                                    Amount
-                                </td>
-                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
-                                    UPI ID
-                                </td>
-                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
-                                    Transaction ID
-                                </td>
-                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
-                                    Category
-                                </td>
-                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-6">
-                                    Action
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody className="lg:border-gray-300">
-
-                            {transactions && transactions.length > 0 ? (
-                                transactions.map((transaction, index) => (
-                                    <tr key={index} className="border-b last:border-b-0">
-                                        {/* Name */}
-                                        <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
-                                            {transaction.name}
-                                            <div className="mt-1 lg:hidden">
-                                                <p className="font-normal text-gray-500">
-                                                    {new Date(transaction.date).toLocaleDateString()}
-                                                </p>
-                                            </div>
-                                        </td>
-
-                                        {/* Date (only visible on large screens) */}
-                                        <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
-                                            {new Date(transaction.date).toLocaleDateString()}
-                                        </td>
-
-                                        {/* Amount */}
-                                        <td className={`whitespace-no-wrap py-4 px-6 text-right text-sm lg:text-left ${transaction.category == "income" ? "text-green-900" : "text-red-900"}`}>
-                                            {transaction.category == "income" ? "+  " : "-  "} ${transaction.amount.toFixed(2)}
-                                        </td>
-
-                                        {/* UPI ID */}
-                                        <td className="whitespace-no-wrap py-4 px-6 text-right text-sm text-gray-600 lg:text-left">
-                                            {transaction.upi_id || "N/A"}
-                                        </td>
-
-                                        {/* Transaction ID */}
-                                        <td className="whitespace-no-wrap py-4 px-6 text-right text-sm text-gray-600 lg:text-left">
-                                            {transaction.transaction_id || "N/A"}
-                                            <div className={`flex mt-1 ml-auto w-fit items-center rounded-full ${getStatusColor(transaction.category)} py-2 px-3 text-left text-xs font-medium text-white lg:hidden`}>
-                                                {transaction.category}
-                                            </div>
-                                        </td>
-
-                                        {/* Status (only visible on large screens) */}
-                                        <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
-                                            <div className={`inline-flex items-center rounded-full ${getStatusColor(transaction.expense_type)} py-2 px-3 text-xs text-white`}>
-                                                {transaction.expense_type}
-                                            </div>
-                                        </td>
-
-                                        <td className="whitespace-nowrap py-4 text-sm font-medium text-gray-500 sm:px-6 flex gap-2">
-                                            {/* Edit Icon */}
-                                            <svg className="cursor-pointer h-5 w-5 text-yellow-500" onClick={() => openEditModal(transaction)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-
-                                            {/* Delete Icon */}
-                                            <svg className="cursor-pointer h-5 w-5 text-red-500" onClick={() => deleteTransaction(transaction._id)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <polyline points="3 6 5 6 21 6" />  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />  <line x1="10" y1="11" x2="10" y2="17" />  <line x1="14" y1="11" x2="14" y2="17" /></svg>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className="hidden lg:block">
+                        {/* Desktop Table */}
+                        <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2">
+                            <thead className="border-b">
                                 <tr>
-                                    <td colSpan="4" className="text-center py-4 text-gray-500">No transactions found</td>
+                                    {["Name", "Date", "Amount", "UPI ID", "Transaction ID", "Category", "Action"].map((title, i) => (
+                                        <td key={i} className="py-4 text-sm font-medium text-gray-500 sm:px-6">{title}</td>
+                                    ))}
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {transactions && transactions.length > 0 ? (
+                                    transactions.map((transaction, index) => (
+                                        <tr key={index} className="border-b last:border-b-0">
+                                            <td className="py-4 text-sm font-bold text-gray-900 sm:px-6">
+                                                {transaction.name}
+                                            </td>
+                                            <td className="py-4 text-sm text-gray-500 sm:px-6">
+                                                {new Date(transaction.date).toLocaleDateString()}
+                                            </td>
+                                            <td className={`py-4 px-6 text-sm text-right lg:text-left ${transaction.category === "income" ? "text-green-900" : "text-red-900"}`}>
+                                                {transaction.category === "income" ? "+ " : "- "} ${transaction.amount.toFixed(2)}
+                                            </td>
+                                            <td className="py-4 px-6 text-sm text-gray-600 text-right lg:text-left">
+                                                {transaction.upi_id || "N/A"}
+                                            </td>
+                                            <td className="py-4 px-6 text-sm text-gray-600 text-right lg:text-left">
+                                                {transaction.transaction_id || "N/A"}
+                                            </td>
+                                            <td className="py-4 text-sm text-gray-500 sm:px-6">
+                                                <div className={`inline-flex items-center rounded-full ${getStatusColor(transaction.expense_type)} py-2 px-3 text-xs text-white`}>
+                                                    {transaction.expense_type}
+                                                </div>
+                                            </td>
+                                            <td className="py-4 text-sm text-gray-500 sm:px-6">
+                                                <div className="flex gap-2">
+                                                    {/* Edit Icon */}
+                                                    <svg className="cursor-pointer h-5 w-5 text-yellow-500" onClick={() => openEditModal(transaction)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+
+                                                    {/* Delete Icon */}
+                                                    <svg className="cursor-pointer h-5 w-5 text-red-500" onClick={() => deleteTransaction(transaction._id)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <polyline points="3 6 5 6 21 6" />  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />  <line x1="10" y1="11" x2="10" y2="17" />  <line x1="14" y1="11" x2="14" y2="17" /></svg>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" className="text-center py-4 text-gray-500">No transactions found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile - Card layout */}
+                    <div className="block lg:hidden divide-y divide-gray-200">
+                        {transactions && transactions.length > 0 ? (
+                            transactions.map((transaction, index) => (
+                                <div key={index} className="p-4">
+                                    <div className="flex justify-between items-center">
+                                        <div className="font-bold text-gray-900">{transaction.name}</div>
+                                        <div className={`text-sm ${transaction.category === "income" ? "text-green-900" : "text-red-900"}`}>
+                                            {transaction.category === "income" ? "+ " : "- "} ${transaction.amount.toFixed(2)}
+                                        </div>
+                                    </div>
+                                    <div className="mt-1 text-sm text-gray-500">
+                                        {new Date(transaction.date).toLocaleDateString()}
+                                    </div>
+                                    <div className="mt-2 text-sm text-gray-600">
+                                        <strong>UPI ID:</strong> {transaction.upi_id || "N/A"}
+                                    </div>
+                                    <div className="text-sm text-gray-600">
+                                        <strong>Txn ID:</strong> {transaction.transaction_id || "N/A"}
+                                    </div>
+                                    <div className="mt-2">
+                                        <span className={`inline-block rounded-full ${getStatusColor(transaction.expense_type)} text-white px-3 py-1 text-xs`}>
+                                            {transaction.expense_type}
+                                        </span>
+                                    </div>
+                                    <div className="mt-3 flex gap-4">
+                                        <svg className="cursor-pointer h-5 w-5 text-yellow-500" onClick={() => openEditModal(transaction)} />
+                                        <svg className="cursor-pointer h-5 w-5 text-red-500" onClick={() => deleteTransaction(transaction._id)} />
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center py-4 text-gray-500">No transactions found</div>
+                        )}
+                    </div>
                 </div>
             </div>
         </>

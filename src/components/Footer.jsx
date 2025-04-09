@@ -1,6 +1,6 @@
-export default () => {
+export default function Footer() {
     return (
-        <footer className="bg-white dark:bg-gray-900">
+        <footer className="hidden md:block bg-white dark:bg-gray-900">
             <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center">
 
@@ -14,7 +14,7 @@ export default () => {
                     </div>
 
                     {/* Links Section */}
-                    <ul className="flex flex-row sm:flex-row sm:flex-wrap items-center text-center md:text-left text-sm font-medium text-gray-500 dark:text-gray-400 mb-6 sm:mb-0 justify-center">
+                    <ul className="flex flex-wrap justify-center md:justify-start text-sm font-medium text-gray-500 dark:text-gray-400 mb-6 md:mb-0">
                         <li>
                             <a href="#" className="mr-4 hover:underline md:mr-6">About</a>
                         </li>
@@ -37,6 +37,5 @@ export default () => {
                 </div>
             </div>
         </footer>
-
     );
-};
+}

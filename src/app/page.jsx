@@ -1,13 +1,28 @@
+"use client";
+
+import Dashboard from "@/components/Home";
 import Link from "next/link";
+import useIsMobile from "./hooks/useIsMobile";
 
 export default () => {
+  const isMobile = useIsMobile();
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-      <h1 className="text-2xl font-bold">Welcome to SpendWise</h1>
-      <Link href="/dashboard">
-        <button className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 cursor-pointer"> Get Started
-        </button>
-      </Link>
-    </div>
+
+    <>
+      {
+        isMobile ? (
+          <Dashboard />
+        ) : (<div className="flex flex-col items-center justify-center min-h-screen px-4 py-8 text-center space-y-6">
+          <h1 className="text-3xl font-bold text-gray-900">Welcome to Spendwise</h1>
+          <Link href="/dashboard">
+            <button className="bg-gray-900 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full flex items-center gap-2 transition-all duration-200 cursor-pointer">
+              Get Started
+            </button>
+          </Link>
+        </div>)
+      }
+
+    </>
+
   );
 };
