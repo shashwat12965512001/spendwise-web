@@ -298,6 +298,8 @@ export default () => {
         }
     };
 
+    console.log("loginHistory: " + loginHistory);
+
     return (
         <>
             <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
