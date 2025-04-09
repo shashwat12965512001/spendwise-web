@@ -7,9 +7,12 @@ import SpendCategories from "@/components/SpendCategories";
 import ToggleSwitch from "@/components/ToogleSwitch";
 import API_BASE_URL from "../utils/apiConfig";
 import Sidebar from "@/components/Sidebar";
+import useIsMobile from "../hooks/useIsMobile";
 
 export default () => {
     useAuth();
+
+    const isMobile = useIsMobile();
 
     const [selectedTab, setSelectedTab] = useState("general");
     const [settings, setSettings] = useState({
@@ -306,97 +309,103 @@ export default () => {
 
     return (
         <>
-            <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
-                <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} isOpen={isOpen} setIsOpen={setIsOpen} />
-                <div className="flex flex-col items-center justify-center w-full">
-                    <div className="content w-3/4 p-6 bg-white shadow rounded-lg">
-                        <ul>
-                            {renderContent()}
-                        </ul>
-                    </div>
-                    <div id="login-history" className="w-3/4 p-6 rounded-lg hidden">
-                        {/* Table */}
-                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                                <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white">
-                                    Login History
-                                    <p className="mt-1 text-sm font-normal text-gray-500">View your recent login history, including dates, times, and locations.</p>
-                                </caption>
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            Device
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Location
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Date
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Time
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {loading ? (
-                                        <tr>
-                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-500">Loading...</td>
-                                        </tr>
-                                    ) : error ? (
-                                        <tr>
-                                            <td colSpan="5" className="px-6 py-4 text-center text-red-500">{error}</td>
-                                        </tr>
-                                    ) : loginHistory.length === 0 ? (
-                                        <tr>
-                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-400">No login history found.</td>
-                                        </tr>
-                                    ) : (
-                                        loginHistory.map((entry, index) => {
-                                            const date = new Date(entry.date);
-                                            const formattedDate = date.toLocaleDateString();
-                                            const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                            return (
-                                                <tr key={index} className="bg-white border-b">
-                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                        {entry.device || "Unknown"}
-                                                    </th>
-                                                    <td className="px-6 py-4">
-                                                        {entry.location || "Unknown"}
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        {formattedDate}
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        {formattedTime}
-                                                    </td>
+            {
+                isMobile ? (
+                    <></>
+                ) : (
+                    <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
+                        <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} isOpen={isOpen} setIsOpen={setIsOpen} />
+                        <div className="flex flex-col items-center justify-center w-full">
+                            <div className="content w-3/4 p-6 bg-white shadow rounded-lg">
+                                <ul>
+                                    {renderContent()}
+                                </ul>
+                            </div>
+                            <div id="login-history" className="w-3/4 p-6 rounded-lg hidden">
+                                {/* Table */}
+                                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                                        <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white">
+                                            Login History
+                                            <p className="mt-1 text-sm font-normal text-gray-500">View your recent login history, including dates, times, and locations.</p>
+                                        </caption>
+                                        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Device
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Location
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Date
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Time
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loading ? (
+                                                <tr>
+                                                    <td colSpan="5" className="px-6 py-4 text-center text-gray-500">Loading...</td>
                                                 </tr>
-                                            );
-                                        })
-                                    )}
-                                    {/* <tr className="bg-white border-b">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            Desktop
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            Home
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            2023-08-15
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            10:00 AM
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button className="font-medium text-blue-600 hover:underline cursor-pointer">View</button>
-                                        </td>
-                                    </tr> */}
-                                </tbody>
-                            </table>
+                                            ) : error ? (
+                                                <tr>
+                                                    <td colSpan="5" className="px-6 py-4 text-center text-red-500">{error}</td>
+                                                </tr>
+                                            ) : loginHistory.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="5" className="px-6 py-4 text-center text-gray-400">No login history found.</td>
+                                                </tr>
+                                            ) : (
+                                                loginHistory.map((entry, index) => {
+                                                    const date = new Date(entry.date);
+                                                    const formattedDate = date.toLocaleDateString();
+                                                    const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                                    return (
+                                                        <tr key={index} className="bg-white border-b">
+                                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                                {entry.device || "Unknown"}
+                                                            </th>
+                                                            <td className="px-6 py-4">
+                                                                {entry.location || "Unknown"}
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                {formattedDate}
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                {formattedTime}
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            )}
+                                            {/* <tr className="bg-white border-b">
+                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                Desktop
+                                            </th>
+                                            <td className="px-6 py-4">
+                                                Home
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                2023-08-15
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                10:00 AM
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button className="font-medium text-blue-600 hover:underline cursor-pointer">View</button>
+                                            </td>
+                                        </tr> */}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                )
+            }
         </>
     );
 }
