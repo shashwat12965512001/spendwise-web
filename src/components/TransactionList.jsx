@@ -1,8 +1,8 @@
 export default function TransactionList({ transactions }) {
     return (
-        <div className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow">
-            <h2 className="text-lg font-semibold mb-2">Transactions</h2>
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="bg-white rounded-xl p-4 shadow">
+            <h2 className="text-lg font-semibold mb-2">Recent Transactions</h2>
+            <ul className="divide-y divide-gray-200">
                 {transactions.map((txn, idx) => (
                     <li key={idx} className="py-2 flex justify-between items-center">
                         <div>

@@ -12,18 +12,15 @@ export default function LayoutWrapper({ children }) {
     return (
         <>
             {/* Top bar for mobile / Header for desktop */}
-            {isMobile ? <TopBar /> : <Header />}
+            <Header />
 
             {/* Main Content */}
-            <main className="mx-auto p-4 min-h-screen spendwise-main-content">
+            <main className="mx-auto lg:p-4 min-h-screen spendwise-main-content">
                 {children}
             </main>
 
             {/* Footer */}
-            {!isMobile && <Footer />}
-
-            {/* Bottom Navigation for mobile */}
-            {isMobile && <BottomNavigationBar />}
+            <Footer />
         </>
     );
 }
