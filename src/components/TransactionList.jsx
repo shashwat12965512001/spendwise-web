@@ -9,8 +9,8 @@ export default function TransactionList({ transactions }) {
                             <p className="font-medium">{txn.name}</p>
                             <p className="text-sm text-gray-500">{new Date(txn.date).toLocaleDateString('en-GB')}</p>
                         </div>
-                        <p className={`font-bold ${txn.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                            ₹ {Math.abs(txn.amount).toLocaleString()}
+                        <p className={`font-bold ${txn.category == "expense" ? 'text-red-600' : 'text-green-600'}`}>
+                            {txn.category == "expense" ? '-' : '+'} ₹{Math.abs(txn.amount).toLocaleString()}
                         </p>
                     </li>
                 ))}

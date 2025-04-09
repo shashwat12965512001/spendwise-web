@@ -18,6 +18,8 @@ export default function TransactionsMobile({ transactions, deleteTransaction, op
 
     return (
         <div className="bg-white block lg:hidden px-4 py-10 min-h-screen">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Transactions</h2>
+
             {/* Search bar */}
             <div className="relative mb-4">
                 <input

@@ -1,16 +1,40 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
-import BottomNav from './BottomNavigationBar'
 import BalanceCard from './BalanceCard'
 import TransactionList from './TransactionList'
+import API_BASE_URL from '@/app/utils/apiConfig'
 
 const Dashboard = () => {
+    const count = 10;
     const [balance] = useState(22950.0);
-    const transactions = [
-        { name: "DeepakInshArt", date: "2024-03-01", amount: 22950 },
-        { name: "Mobile Recharge", date: "2024-03-02", amount: 550 },
-    ]
+    const [transactions, setTransactions] = useState([]);
+
+    const fetchRecentTransactions = async (count) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${count}`);
+            const data = await response.json();
+
+            if (data.success) {
+                return data.transactions;
+            } else {
+                console.error("Error fetching transactions:", data.error);
+                return [];
+            }
+        } catch (error) {
+            console.error("Server error:", error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        const getTransactions = async () => {
+            const data = await fetchRecentTransactions(count);
+            setTransactions(data);
+        };
+
+        getTransactions();
+    }, [count]);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#f0f4ff] to-white px-4 pb-20">
