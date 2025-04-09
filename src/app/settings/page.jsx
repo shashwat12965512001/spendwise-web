@@ -57,6 +57,7 @@ export default () => {
         }
     }, []);
 
+    // ✅ Fetch login history
     useEffect(() => {
         const fetchLoginHistory = async () => {
             try {
@@ -65,6 +66,7 @@ export default () => {
 
                 if (res.ok) {
                     setLoginHistory(data.loginHistory || []);
+                    setLoading(false);
                 } else {
                     console.log(data.error || "Failed to load login history.");
                 }
@@ -98,7 +100,7 @@ export default () => {
                 }),
             });
             if (!response.ok) console.log("Failed to save settings: " + response.error);
-            console.log("Settings updated successfully!");
+            alert("Settings updated successfully!");
         } catch (error) {
             console.log("Error updating settings: " + error.message);
         }
@@ -247,7 +249,11 @@ export default () => {
                         {/* Login History */}
                         <div className="flex flex-row justify-between">
                             <p className="text-md font-semibold">Login History</p>
-                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer">View</button>
+                            <button className="bg-gray-900 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer" onClick={(e) => {
+                                const loginHistoryElement = document.getElementById("login-history");
+                                loginHistoryElement.classList.contains("hidden") ? loginHistoryElement.classList.remove('hidden') : loginHistoryElement.classList.add('hidden');
+                                e.target.textContent = e.target.textContent === "View" ? "Hide" : "View";
+                            }}>View</button>
                         </div>
                     </>
                 );
@@ -298,8 +304,6 @@ export default () => {
         }
     };
 
-    console.log("loginHistory: " + loginHistory);
-
     return (
         <>
             <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
@@ -310,7 +314,7 @@ export default () => {
                             {renderContent()}
                         </ul>
                     </div>
-                    <div id="login-history" className="w-3/4 p-6 bg-white shadow rounded-lg mt-4">
+                    <div id="login-history" className="w-3/4 p-6 rounded-lg hidden">
                         {/* Table */}
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -332,9 +336,6 @@ export default () => {
                                         <th scope="col" className="px-6 py-3">
                                             Time
                                         </th>
-                                        <th scope="col" className="px-6 py-3 text-right">
-                                            Action
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -352,10 +353,9 @@ export default () => {
                                         </tr>
                                     ) : (
                                         loginHistory.map((entry, index) => {
-                                            const date = new Date(entry.timestamp);
+                                            const date = new Date(entry.date);
                                             const formattedDate = date.toLocaleDateString();
                                             const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
                                             return (
                                                 <tr key={index} className="bg-white border-b">
                                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -369,11 +369,6 @@ export default () => {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {formattedTime}
-                                                    </td>
-                                                    <td className="px-6 py-4 text-right">
-                                                        <button className="font-medium text-blue-600 hover:underline cursor-pointer">
-                                                            View
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             );
