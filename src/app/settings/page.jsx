@@ -8,6 +8,7 @@ import ToggleSwitch from "@/components/ToogleSwitch";
 import API_BASE_URL from "../utils/apiConfig";
 import Sidebar from "@/components/Sidebar";
 import useIsMobile from "../hooks/useIsMobile";
+import SettingsMobile from "@/components/SettingsMobile";
 
 export default () => {
     useAuth();
@@ -311,7 +312,9 @@ export default () => {
         <>
             {
                 isMobile ? (
-                    <></>
+                    <>
+                        <SettingsMobile />
+                    </>
                 ) : (
                     <div className="container max-w-screen-xl flex flex-row items-start justify-between mx-auto p-4">
                         <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} isOpen={isOpen} setIsOpen={setIsOpen} />
