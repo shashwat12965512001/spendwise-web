@@ -4,12 +4,18 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import API_BASE_URL from "../app/utils/apiConfig";
 
-export const RecentTransactions = ({ count = 10 }) => {
+export const RecentTransactions = ({ count = 10, userId }) => {
     const [transactions, setTransactions] = useState([]);
 
-    const fetchRecentTransactions = async (count) => {
+    const fetchRecentTransactions = async (userId, count = 10) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${count}`);
+            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${userId}/${count}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
             const data = await response.json();
 
             if (data.success) {

@@ -98,7 +98,7 @@ export default () => {
 
                         {/* Recent Trasactions */}
                         <div className="p-4">
-                            <RecentTransactions count={10} />
+                            <RecentTransactions count={10} userId={user && user.id} />
                         </div>
                     </>
                 )

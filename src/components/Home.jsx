@@ -9,10 +9,27 @@ const Dashboard = () => {
     const count = 10;
     const [balance] = useState(22950.0);
     const [transactions, setTransactions] = useState([]);
+    const [userId, setUserId] = useState(null);
 
-    const fetchRecentTransactions = async (count) => {
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+        if (storedUser?.id) {
+            setUserId(storedUser.id);
+            fetchRecentTransactions(storedUser.id, count).then(setTransactions);
+        }
+    }, []);
+
+
+    const fetchRecentTransactions = async (userId, count = 10) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${count}`);
+            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${userId}/${count}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
             const data = await response.json();
 
             if (data.success) {
@@ -27,14 +44,11 @@ const Dashboard = () => {
         }
     };
 
-    useEffect(() => {
-        const getTransactions = async () => {
-            const data = await fetchRecentTransactions(count);
-            setTransactions(data);
-        };
-
-        getTransactions();
-    }, [count]);
+    const getTransactions = async (count) => {
+        // Fetch recent transactions for the logged-in user
+        const data = await fetchRecentTransactions(userId, count);
+        setTransactions(data);
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#f0f4ff] to-white px-4 pb-20">

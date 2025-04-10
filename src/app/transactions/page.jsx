@@ -12,21 +12,33 @@ export default () => {
     useAuth();
 
     const isMobile = useIsMobile();
+    const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+        setToken(storedToken);
+        if (storedUser?.id) {
+            setUserId(storedUser.id);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userId) {
+            fetchTransactions(); // ✅ Now runs when both are ready
+        }
+    }, [userId]);
 
     // State to store transactions
     const [transactions, setTransactions] = useState([]);
     const [editTransaction, setEditTransaction] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
-
     const fetchTransactions = async () => {
-        const token = localStorage.getItem("token");
-
         try {
-            const response = await fetch(`${API_BASE_URL}/api/transactions/all`, {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/all/${userId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -38,6 +50,7 @@ export default () => {
 
             if (!response.ok) {
                 console.log(data.error || "Failed to fetch transactions");
+                return;
             }
 
             setTransactions(data);
@@ -47,8 +60,6 @@ export default () => {
     };
 
     const deleteTransaction = async (id) => {
-        const token = localStorage.getItem("token");
-
         try {
             const response = await fetch(`${API_BASE_URL}/api/transactions/delete/${id}`, {
                 method: "DELETE",
@@ -71,8 +82,6 @@ export default () => {
 
     // Update Transaction
     const updateTransaction = async () => {
-        const token = localStorage.getItem("token");
-
         try {
             const response = await fetch(`${API_BASE_URL}/api/transactions/update/${editTransaction._id}`, {
                 method: "PUT",
@@ -80,7 +89,10 @@ export default () => {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(editTransaction),
+                body: JSON.stringify({
+                    ...editTransaction,
+                    user_id: userId,
+                }),
             });
 
             console.log("editTransaction:", JSON.stringify(editTransaction, null, 2));
@@ -130,7 +142,10 @@ export default () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(expense),
+                body: JSON.stringify({
+                    ...expense,
+                    user_id: userId,
+                }),
             });
 
             if (!response.ok) {
@@ -146,7 +161,7 @@ export default () => {
             // Close the modal (optional)
             closeModal("spendwise-add-new-expense");
 
-            window.location.reload();
+            // window.location.reload();
         } catch (error) {
             console.error("Error:", error);
         }
