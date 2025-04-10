@@ -3,9 +3,11 @@
 import Dashboard from "@/components/Home";
 import Link from "next/link";
 import useIsMobile from "./hooks/useIsMobile";
+import useAuth from "./hooks/useAuth";
 
 export default () => {
   const isMobile = useIsMobile();
+  useAuth();
   return (
 
     <>

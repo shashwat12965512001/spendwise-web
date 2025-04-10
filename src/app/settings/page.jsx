@@ -14,7 +14,6 @@ export default () => {
     useAuth();
 
     const isMobile = useIsMobile();
-
     const [selectedTab, setSelectedTab] = useState("general");
     const [settings, setSettings] = useState({
         enableNotifications: true,
@@ -72,7 +71,8 @@ export default () => {
                     setLoginHistory(data.loginHistory || []);
                     setLoading(false);
                 } else {
-                    console.log(data.error || "Failed to load login history.");
+                    setError(data.error || "Failed to fetch login history");
+                    setLoading(false);
                 }
             } catch (err) {
                 console.error(err);
@@ -384,23 +384,6 @@ export default () => {
                                                     );
                                                 })
                                             )}
-                                            {/* <tr className="bg-white border-b">
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                Desktop
-                                            </th>
-                                            <td className="px-6 py-4">
-                                                Home
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                2023-08-15
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                10:00 AM
-                                            </td>
-                                            <td className="px-6 py-4 text-right">
-                                                <button className="font-medium text-blue-600 hover:underline cursor-pointer">View</button>
-                                            </td>
-                                        </tr> */}
                                         </tbody>
                                     </table>
                                 </div>

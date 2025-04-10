@@ -273,7 +273,7 @@ export default () => {
             </div>
 
             {/* Add new Expense Modal */}
-            <div id="spendwise-add-new-expense" tabIndex="-1" className="bg-gray-400 bg-opacity-50 hidden overflow-y-auto overflow-x-hidden absolute top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full">
+            <div id="spendwise-add-new-expense" tabIndex="-1" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50 hidden">
                 <div className="relative p-4 w-full max-w-md max-h-full">
                     <div className="relative bg-white rounded-lg shadow-sm">
                         {/* Modal header */}
