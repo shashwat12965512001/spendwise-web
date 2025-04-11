@@ -16,11 +16,12 @@ export default () => {
         new_password: "",
     });
     const [settings, setSettings] = useState({
-        enableNotifications: true,
+        enableNotifications: false,
         smartSpendingNotifications: false,
         dailySummary: false,
-        weeklySummary: true,
+        weeklySummary: false,
         hideDefaultSMSNotifications: false,
+        darkMode: false,
     });
     const userId = user?.id;
 
@@ -59,7 +60,6 @@ export default () => {
                 const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
                 if (!response.ok) throw new Error("Failed to fetch settings");
                 const data = await response.json();
-                console.log("data: " + JSON.stringify(data));
                 setSettings(data);
             } catch (err) {
                 console.log(err.message);
@@ -68,6 +68,14 @@ export default () => {
 
         fetchSettings();
     }, []);
+
+    useEffect(() => {
+        if (settings.darkMode) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [settings.darkMode]);
 
     function SettingItem({ label, btn_label, onclick }) {
         return (
@@ -165,6 +173,8 @@ export default () => {
             console.log("Error updating settings: " + error.message);
         }
     };
+
+    console.log(settings);
 
     return (
         <>
@@ -295,7 +305,7 @@ export default () => {
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-600">Dark Mode</span>
                             <label className="inline-flex relative items-center cursor-pointer">
-                                <input type="checkbox" value="" className="sr-only peer" />
+                                <input type="checkbox" checked={settings.darkMode || false} onChange={(e) => handleToggle("darkMode", e.target.checked)} className="sr-only peer" />
                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                             </label>
                         </div>

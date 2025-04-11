@@ -15,7 +15,7 @@ export default function LayoutWrapper({ children }) {
             <Header />
 
             {/* Main Content */}
-            <main className="mx-auto lg:p-4 min-h-screen spendwise-main-content pb-16">
+            <main className="mx-auto lg:p-4 min-h-screen spendwise-main-content">
                 {children}
             </main>
 

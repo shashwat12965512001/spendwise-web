@@ -22,6 +22,7 @@ export default () => {
         dailySummary: false,
         weeklySummary: true,
         hideDefaultSMSNotifications: false,
+        darkMode: false,
     });
     const [user, setUser] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
