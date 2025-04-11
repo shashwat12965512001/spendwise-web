@@ -2,9 +2,11 @@
 
 import API_BASE_URL from "@/app/utils/apiConfig";
 import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 export default function ProfileMobile() {
     const [user, setUser] = useState(null);
+    const [ready, setReady] = useState(false);
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -18,6 +20,10 @@ export default function ProfileMobile() {
         if (storedUser) {
             setUser(JSON.parse(storedUser)); // Parse JSON if stored as an object
         }
+    }, []);
+
+    useEffect(() => {
+        setReady(true);
     }, []);
 
     const handleInputChange = (e) => {
@@ -41,6 +47,7 @@ export default function ProfileMobile() {
     }, [user]);
 
     const handleUpdateProfile = async (e) => {
+        setReady(false);
         e.preventDefault();
 
         const updatedData = {
@@ -64,18 +71,22 @@ export default function ProfileMobile() {
                 setUser(updatedUser.user);
                 window.location.reload();
             } else {
+                setReady(true);
                 console.log("Failed to update profile: " + response.error);
             }
         } catch (error) {
+            setReady(true);
             console.error("Error updating profile:", error);
         }
     };
+
+    if (!ready) return <Loader />;
 
     return (
         <div className="min-h-screen bg-gray-50 px-4 pt-6 pb-20">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold text-gray-800">Profile</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">Profile</h2>
                 <button className="text-blue-500 font-medium" onClick={handleUpdateProfile}>Save</button>
             </div>
 

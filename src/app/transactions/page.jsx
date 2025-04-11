@@ -88,6 +88,7 @@ export default () => {
 
     // Update Transaction
     const updateTransaction = async () => {
+        setReady(false);
         try {
             const response = await fetch(`${API_BASE_URL}/api/transactions/update/${editTransaction._id}`, {
                 method: "PUT",
@@ -105,6 +106,7 @@ export default () => {
             const updatedTransaction = await response.json();
             console.log("updatedTransaction:", JSON.stringify(updatedTransaction, null, 2));
             if (!response.ok) {
+                setReady(true);
                 console.log("Failed to update transaction");
             }
 
@@ -140,6 +142,7 @@ export default () => {
 
     // Handle form submission
     const handleSubmit = async (e) => {
+        setReady(false);
         e.preventDefault(); // Prevent default form reload
 
         try {
@@ -156,6 +159,7 @@ export default () => {
 
             if (!response.ok) {
                 console.log("Failed to add expense");
+                setReady(true);
             }
 
             const data = await response.json();
@@ -167,7 +171,7 @@ export default () => {
             // Close the modal (optional)
             closeModal("spendwise-add-new-expense");
 
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
             console.error("Error:", error);
         }

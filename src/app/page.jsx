@@ -5,6 +5,7 @@ import Link from "next/link";
 import useIsMobile from "./hooks/useIsMobile";
 import useAuth from "./hooks/useAuth";
 import Loader from "@/components/Loader";
+import { useState, useEffect } from "react";
 
 export default () => {
   const isMobile = useIsMobile();
