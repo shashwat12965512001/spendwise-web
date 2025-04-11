@@ -9,6 +9,7 @@ import API_BASE_URL from "../utils/apiConfig";
 import Sidebar from "@/components/Sidebar";
 import useIsMobile from "../hooks/useIsMobile";
 import SettingsMobile from "@/components/SettingsMobile";
+import Loader from "@/components/Loader";
 
 export default () => {
     useAuth();
@@ -32,8 +33,12 @@ export default () => {
     });
     const [loginHistory, setLoginHistory] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [ready, setReady] = useState(false);
     const userId = user?.id;
+
+    useEffect(() => {
+        setReady(true);
+    }, []);
 
     // ✅ Fetch settings from backend
     useEffect(() => {
@@ -307,6 +312,8 @@ export default () => {
                 );
         }
     };
+
+    if (!ready) return <Loader />;
 
     return (
         <>

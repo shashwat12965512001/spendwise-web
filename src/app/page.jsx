@@ -4,10 +4,18 @@ import Dashboard from "@/components/Home";
 import Link from "next/link";
 import useIsMobile from "./hooks/useIsMobile";
 import useAuth from "./hooks/useAuth";
+import Loader from "@/components/Loader";
 
 export default () => {
   const isMobile = useIsMobile();
+  const [ready, setReady] = useState(false);
   useAuth();
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  if (!ready) return <Loader />;
   return (
 
     <>

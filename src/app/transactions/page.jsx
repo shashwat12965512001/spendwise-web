@@ -7,6 +7,7 @@ import API_BASE_URL from "../utils/apiConfig";
 import Papa from "papaparse";
 import useIsMobile from "../hooks/useIsMobile";
 import TransactionsMobile from "@/components/TransactionsMobile";
+import Loader from "@/components/Loader";
 
 export default () => {
     useAuth();
@@ -14,6 +15,11 @@ export default () => {
     const isMobile = useIsMobile();
     const [token, setToken] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        setReady(true);
+    }, []);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
@@ -234,6 +240,8 @@ export default () => {
         modal?.classList.add('hidden');
         setIsModalOpen(false);
     };
+
+    if (!ready) return <Loader />;
 
     return (
         <>

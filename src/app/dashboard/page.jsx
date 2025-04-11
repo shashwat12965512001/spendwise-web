@@ -6,12 +6,18 @@ import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 import useIsMobile from "../hooks/useIsMobile";
 import Dashboard from "@/components/Home";
+import Loader from "@/components/Loader";
 
 export default () => {
     useAuth();
 
     const [user, setUser] = useState(null);
     const isMobile = useIsMobile();
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        setReady(true);
+    }, []);
 
     useEffect(() => {
         // This runs only on the client side
@@ -52,6 +58,8 @@ export default () => {
         }
         return "August 2024"; // Default value
     };
+
+    if (!ready) return <Loader />;
 
     return (
         <>
