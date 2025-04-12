@@ -48,7 +48,6 @@ export default () => {
                 const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
                 if (!response.ok) throw new Error("Failed to fetch settings");
                 const data = await response.json();
-                console.log("data: " + JSON.stringify(data));
                 setSettings(data);
             } catch (err) {
                 console.log(err.message);

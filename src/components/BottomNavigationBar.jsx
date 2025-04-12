@@ -52,7 +52,7 @@ export default function BottomNav() {
     }, []);
 
     return (
-        <nav className={`fixed bottom-0 w-full bg-white border-t ${settings.darkMode ? "dark:bg-gray-900 border-gray-400" : "border-white"} flex justify-around py-2 z-50`}>
+        <nav className={`relative bottom-0 w-full bg-white border-t ${settings.darkMode ? "dark:bg-gray-900 border-white" : "border-gray-400"} flex justify-around py-2 z-50`}>
             {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 const Icon = item.icon;

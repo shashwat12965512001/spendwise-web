@@ -80,8 +80,8 @@ export default () => {
     function SettingItem({ label, btn_label, onclick }) {
         return (
             <div className="flex justify-between text-sm items-center py-2 border-b border-gray-200">
-                <span className="text-gray-700">{label}</span>
-                <button className="text-blue-500 text-sm" onClick={onclick}>{btn_label}</button>
+                <span className={`text-gray-700 ${settings.darkMode ? "dark:text-white" : ""}`}>{label}</span>
+                <button className="text-blue-500 text-sm cursor-pointer" onClick={onclick}>{btn_label}</button>
             </div>
         );
     }
@@ -89,7 +89,7 @@ export default () => {
     function ToggleItem({ label, name }) {
         return (
             <div className="flex justify-between text-sm items-center py-2 border-b border-gray-200">
-                <span className="text-gray-700">{label}</span>
+                <span className={`text-gray-700 ${settings.darkMode ? "dark:text-white" : ""}`}>{label}</span>
                 <input type="checkbox" onChange={() => { handleToggle(name, !settings[name]) }} checked={settings[name]} className="toggle toggle-primary" />
             </div>
         );
@@ -174,20 +174,18 @@ export default () => {
         }
     };
 
-    console.log(settings);
-
     return (
         <>
             <div id="spendwise-change-password" tabIndex="-1" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50 hidden">
                 <div className="relative p-4 w-full max-w-md max-h-full">
-                    <div className="relative bg-white rounded-lg shadow-sm">
+                    <div className={`relative bg-white rounded-lg shadow-sm ${settings.darkMode ? "dark:bg-gray-900" : ""}`}>
                         {/* Modal header */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
-                            <h3 className="text-xl font-semibold text-gray-900">
+                            <h3 className={`text-xl font-semibold text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>
                                 Change Password
                             </h3>
                             <button onClick={() => closeModal("spendwise-change-password")} className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
-                                <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <svg className={`w-3 h-3 ${settings.darkMode ? "dark:text-white" : ""}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
                                 <span className="sr-only">Close modal</span>
@@ -211,16 +209,18 @@ export default () => {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="current_password" className="block mb-2 text-sm font-medium text-gray-900">Current Password</label>
-                                    <input type="password" autoComplete="current-password" name="current_password" id="current_password" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    <label htmlFor="current_password" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Current Password</label>
+                                    <input type="password" autoComplete="current-password" name="current_password" id="current_password" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:text-gray-900" : ""}`} required />
                                 </div>
+
                                 <div>
-                                    <label htmlFor="new_password" className="block mb-2 text-sm font-medium text-gray-900">New Password</label>
-                                    <input type="password" autoComplete="new-password" name="new_password" id="new_password" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                    <label htmlFor="new_password" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>New Password</label>
+                                    <input type="password" autoComplete="new-password" name="new_password" id="new_password" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:text-gray-900" : ""}`} required />
                                 </div>
+
                                 <div>
-                                    <label htmlFor="confirm-new-password" className="block mb-2 text-sm font-medium text-gray-900">Confirm New Password</label>
-                                    <input type="password" autoComplete="confirm-new-password" name="confirm-new-password" id="confirm-new-password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => {
+                                    <label htmlFor="confirm-new-password" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Confirm New Password</label>
+                                    <input type="password" autoComplete="confirm-new-password" name="confirm-new-password" id="confirm-new-password" className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:text-gray-900" : ""}`} onChange={(e) => {
                                         // check with password and confirm password
                                         const newPassword = document.getElementById("new_password").value;
                                         const confirmPassword = e.target.value;
@@ -231,6 +231,7 @@ export default () => {
                                         }
                                     }} required />
                                 </div>
+
                                 <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Update</button>
                                 {/* Error Message */}
                                 {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
@@ -244,80 +245,86 @@ export default () => {
 
             {/* Login History */}
             <div id="login-history" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50 hidden">
-                <div className="bg-white rounded-lg w-full max-w-md p-6 shadow-lg">
+                <div className={`bg-white rounded-lg w-full max-w-md p-6 shadow-lg ${settings.darkMode ? "dark:bg-gray-900" : ""}`}>
                     <div className="flex justify-between items-center border-b pb-3 mb-4">
-                        <h2 className="text-lg font-semibold text-gray-900">Login History</h2>
-                        <button onClick={() => closeModal("login-history")} className="text-gray-500 hover:text-gray-800">
+                        <h2 className={`text-lg font-semibold text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Login History</h2>
+                        <button onClick={() => closeModal("login-history")} className={`text-gray-500 hover:text-gray-800 ${settings.darkMode ? "dark:text-white" : ""}`}>
                             ✕
                         </button>
                     </div>
-                    <div className="max-h-80 overflow-y-auto space-y-4">
+                    <div className={`max-h-80 overflow-y-auto space-y-4 ${settings.darkMode ? "dark:bg-gray-900" : ""}`}>
                         {
                             loading && (
-                                <p className="text-gray-500 text-sm">Loading login history...</p>
+                                <p className={`text-gray-500 text-sm ${settings.darkMode ? "dark:text-white" : ""}`}>Loading login history...</p>
                             ) ||
                                 loginHistory && loginHistory.length > 0 ? (
                                 loginHistory.map((entry, index) => (
-                                    <div key={index} className="border rounded-md p-3 bg-gray-50">
-                                        <p className="text-sm text-gray-700"><strong>Device:</strong> {entry.device}</p>
-                                        <p className="text-sm text-gray-700"><strong>Location:</strong> {entry.location}</p>
-                                        <p className="text-sm text-gray-700"><strong>Date:</strong> {new Date(entry.date).toLocaleString()}</p>
+                                    <div key={index} className={`border rounded-md p-3 bg-gray-50 ${settings.darkMode ? "dark:bg-gray-900 dark:border dark:border-gray-600" : ""}`}>
+                                        <p className={`text-sm text-gray-700 ${settings.darkMode ? "dark:text-white" : ""}`}><strong className={settings.darkMode ? "dark:text-gray-500" : ""}>Device:</strong> {entry.device}</p>
+                                        <p className={`text-sm text-gray-700 ${settings.darkMode ? "dark:text-white" : ""}`}><strong className={settings.darkMode ? "dark:text-gray-500" : ""}>Location:</strong> {entry.location}</p>
+                                        <p className={`text-sm text-gray-700 ${settings.darkMode ? "dark:text-white" : ""}`}><strong className={settings.darkMode ? "dark:text-gray-500" : ""}>Date:</strong> {new Date(entry.date).toLocaleString()}</p>
                                     </div>
                                 ))
                             ) : (
-                                <p className="text-gray-500 text-sm">No login history found.</p>
+                                <p className={`text-gray-500 text-sm ${settings.darkMode ? "dark:text-white" : ""}`}>No login history found.</p>
                             )}
                     </div>
                 </div>
             </div>
 
-            <div className="min-h-screen bg-gray-50 py-6 px-4">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-6">Settings</h2>
+            <div className={`min-h-screen bg-gray-50 py-6 px-4 ${settings.darkMode ? "dark:bg-gray-900" : ""}`}>
+                <h2 className={`text-2xl font-semibold text-gray-800 mb-6 ${settings.darkMode ? "dark:text-white" : ""}`}>Settings</h2>
 
                 <div className="space-y-4">
                     {/* Profile Section */}
-                    <div className="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between">
+                    <div className={`bg-white rounded-xl shadow-sm p-4 flex items-center justify-between ${settings.darkMode ? "dark:bg-gray-900 dark:border dark:border-gray-600" : ""}`}>
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
                                 {/* Add Profile Image */}
-                                <svg className="w-8 h-8 m-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className={`w-8 h-8 m-2 text-gray-400 ${settings.darkMode ? "dark:text-gray-600" : ""}`} fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                                 </svg>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-600">Logged in as</p>
-                                <p className="font-medium text-gray-900">{user?.name}</p>
+                                <p className={`text-sm text-gray-600 ${settings.darkMode ? "dark:text-white" : ""}`}>Logged in as</p>
+                                <p className={`font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>{user?.name}</p>
                             </div>
                         </div>
                         <button onClick={() => router.push("/profile")} className="text-sm text-blue-500 hover:underline">Edit</button>
                     </div>
 
                     {/* Preferences */}
-                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+                    <div className={`bg-white rounded-xl shadow-sm p-4 space-y-4 ${settings.darkMode ? "dark:bg-gray-900 dark:border dark:border-gray-600" : ""}`}>
                         <div className="flex items-center gap-4 mb-4">
-                            <svg className="h-4 w-4 text-gray-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className={`h-4 w-4 text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="3" />
                                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                             </svg>
-                            <h3 className="text-gray-700 text-sm font-medium">Preferences</h3>
+                            <h3 className={`text-gray-700 text-sm font-medium ${settings.darkMode ? "dark:text-white" : ""}`}>Preferences</h3>
                         </div>
 
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">Dark Mode</span>
+                            <span className={`text-sm text-gray-600 ${settings.darkMode ? "dark:text-white" : ""}`}>Dark Mode</span>
                             <label className="inline-flex relative items-center cursor-pointer">
-                                <input type="checkbox" checked={settings.darkMode || false} onChange={(e) => handleToggle("darkMode", e.target.checked)} className="sr-only peer" />
+                                <input type="checkbox" checked={settings.darkMode || false} onChange={(e) => {
+                                    handleToggle("darkMode", e.target.checked);
+                                    setTimeout(() => {
+                                        document.getElementById("spendwise-save-notifications").click();
+                                        window.location.reload();
+                                    }, 1000);
+                                }} className="sr-only peer" />
                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
                     </div>
 
                     {/* Account Section */}
-                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+                    <div className={`bg-white rounded-xl shadow-sm p-4 space-y-4 ${settings.darkMode ? "dark:bg-gray-900 dark:border dark:border-gray-600" : ""}`}>
                         <div className="flex items-center gap-4 mb-4">
-                            <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                            <svg className={`w-4 h-4 text-gray-800 ${settings.darkMode ? "dark:text-white" : ""}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4H1m3 4H1m3 4H1m3 4H1m6.071.286a3.429 3.429 0 1 1 6.858 0M4 1h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Zm9 6.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
                             </svg>
-                            <h3 className="text-gray-700 text-sm font-medium">Account</h3>
+                            <h3 className={`text-gray-700 text-sm font-medium ${settings.darkMode ? "dark:text-white" : ""}`}>Account</h3>
                         </div>
 
                         <SettingItem label="Change Password" btn_label={"Change"} onclick={() => openModal("spendwise-change-password")} />
@@ -326,12 +333,12 @@ export default () => {
                     </div>
 
                     {/* Notification Settings */}
-                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+                    <div className={`bg-white rounded-xl shadow-sm p-4 space-y-4 ${settings.darkMode ? "dark:bg-gray-900 dark:border dark:border-gray-600" : ""}`}>
                         <div className="flex items-center gap-4 mb-4">
-                            <svg className="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 21">
+                            <svg className={`w-4 h-4 text-gray-800 ${settings.darkMode ? "dark:text-white" : ""}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 21">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 3.464V1.1m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175C15 15.4 15 16 14.462 16H1.538C1 16 1 15.4 1 14.807c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 8 3.464ZM4.54 16a3.48 3.48 0 0 0 6.92 0H4.54Z"></path>
                             </svg>
-                            <h3 className="text-gray-700 text-sm font-medium">Notifications & Reminders</h3>
+                            <h3 className={`text-gray-700 text-sm font-medium ${settings.darkMode ? "dark:text-white" : ""}`}>Notifications & Reminders</h3>
                         </div>
                         <ToggleItem label="Enable Notifications" name="enableNotifications" />
                         <ToggleItem label="Smart Spending Notifications" name="smartSpendingNotifications" />
@@ -339,14 +346,14 @@ export default () => {
                         <ToggleItem label="Weekly Summary" name="weeklySummary" />
                         <ToggleItem label="Hide Default SMS Notifications" name="hideDefaultSMSNotifications" />
 
-                        <button className="w-full text-sm text-blue-500 py-2" onClick={saveNotificationSettings}>
+                        <button id="spendwise-save-notifications" className="w-full text-sm text-blue-500 py-2" onClick={saveNotificationSettings}>
                             Save Settings
                         </button>
                         {/* Success Message */}
                         {success && <p className="text-green-500 text-sm mt-1">{success}</p>}
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+                    <div className={`bg-white rounded-xl shadow-sm p-4 space-y-4 ${settings.darkMode ? "dark:bg-gray-900 dark:border dark:border-gray-600" : ""}`}>
                         <button id="logout" className="w-full text-left text-lg text-red-500 py-2" onClick={() => handleLogout()}>
                             <svg className="w-4 h-4 text-red-500 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"></path>

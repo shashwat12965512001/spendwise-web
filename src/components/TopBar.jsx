@@ -39,7 +39,7 @@ export default function TopBar() {
 
     return (
         <>
-            <div className={`w-full bg-white border-b ${settings.darkMode ? "dark:bg-gray-900 border-gray-400" : "border-white"} shadow px-4 py-5`}>
+            <div className={`w-full bg-white border-b ${settings.darkMode ? "dark:bg-gray-900 border-white" : "border-gray-400"} shadow px-4 py-5`}>
                 <div className="max-w-screen-xl mx-auto flex items-center justify-between">
                     <h1 className={`text-xl font-semibold text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>
                         <img className="w-50" src={`/assets/img/app_logo_${settings.darkMode ? "light" : "dark"}.png`} alt="Spendwise" />
