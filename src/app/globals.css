@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+body {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
 .spendwise-main-content {
-    background-color: #b79d9d45;
+    /* background-color: #b79d9d45; */
+    padding-bottom: env(safe-area-inset-bottom, 16px);
 }
 
 .spendwise-transactions-screen {
