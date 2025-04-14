@@ -210,17 +210,17 @@ export default () => {
 
                                 <div>
                                     <label htmlFor="current_password" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Current Password</label>
-                                    <input type="password" autoComplete="current-password" name="current_password" id="current_password" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:text-gray-900" : ""}`} required />
+                                    <input type="password" autoComplete="current-password" name="current_password" id="current_password" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white" : ""}`} required />
                                 </div>
 
                                 <div>
                                     <label htmlFor="new_password" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>New Password</label>
-                                    <input type="password" autoComplete="new-password" name="new_password" id="new_password" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:text-gray-900" : ""}`} required />
+                                    <input type="password" autoComplete="new-password" name="new_password" id="new_password" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white" : ""}`} required />
                                 </div>
 
                                 <div>
                                     <label htmlFor="confirm-new-password" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Confirm New Password</label>
-                                    <input type="password" autoComplete="confirm-new-password" name="confirm-new-password" id="confirm-new-password" className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:text-gray-900" : ""}`} onChange={(e) => {
+                                    <input type="password" autoComplete="confirm-new-password" name="confirm-new-password" id="confirm-new-password" className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white" : ""}`} onChange={(e) => {
                                         // check with password and confirm password
                                         const newPassword = document.getElementById("new_password").value;
                                         const confirmPassword = e.target.value;
