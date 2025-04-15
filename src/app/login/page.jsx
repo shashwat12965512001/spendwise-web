@@ -11,36 +11,6 @@ export default () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [ready, setReady] = useState(false);
-    const [settings, setSettings] = useState({
-        enableNotifications: false,
-        smartSpendingNotifications: false,
-        dailySummary: false,
-        weeklySummary: false,
-        hideDefaultSMSNotifications: false,
-        darkMode: false,
-    });
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const storedUser = JSON.parse(localStorage.getItem("user"));
-            setUser(storedUser);
-        }
-    }, []);
-
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
-                if (!response.ok) throw new Error("Failed to fetch settings");
-                const data = await response.json();
-                setSettings(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-
-        fetchSettings();
-    }, []);
 
     useEffect(() => {
         setReady(true);
@@ -104,9 +74,9 @@ export default () => {
     return (
 
         <>
-            <div className={`flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ${settings.darkMode ? "dark:bg-gray-900" : ""}`}>
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className={`mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
                         Login
                     </h2>
                 </div>
@@ -114,7 +84,7 @@ export default () => {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="email" className={`block text-sm/6 font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                                 Email address
                             </label>
                             <div className="mt-2">
@@ -125,14 +95,14 @@ export default () => {
                                     onChange={handleChange}
                                     required
                                     autoComplete="email"
-                                    className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white" : ""}`}
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
                         </div>
 
                         <div>
                             <div className="flex items-center justify-between">
-                                <label htmlFor="password" className={`block text-sm/6 font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>
+                                <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
                                     Password
                                 </label>
                                 <div className="text-sm">
@@ -149,7 +119,7 @@ export default () => {
                                     onChange={handleChange}
                                     required
                                     autoComplete="current-password"
-                                    className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white" : ""}`}
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
                         </div>
