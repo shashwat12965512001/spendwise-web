@@ -9,10 +9,11 @@ const Dashboard = () => {
     const count = 10;
     const [balance] = useState(22950.0);
     const [transactions, setTransactions] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-
+        setUser(storedUser);
         if (storedUser?.id) {
             fetchRecentTransactions(storedUser.id, count).then(setTransactions);
         }
@@ -46,7 +47,7 @@ const Dashboard = () => {
             {/* Header */}
             <div className="flex justify-between items-center py-4">
                 <div>
-                    <p className={`text-gray-500 text-sm`}>Hi, User 👋</p>
+                    <p className={`text-gray-500 text-sm`}>Hi, {user && user.name || "User"} 👋</p>
                     <h2 className={`text-xl font-bold text-gray-900`}>Welcome back!</h2>
                 </div>
                 <FaUserCircle className={`text-3xl text-gray-600`} />
