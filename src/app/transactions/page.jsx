@@ -320,13 +320,13 @@ export default () => {
             {/* Add new Expense Modal */}
             <div id="spendwise-add-new-expense" tabIndex="-1" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50 hidden">
                 <div className="relative p-4 w-full max-w-md max-h-full">
-                    <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-900">
+                    <div className="relative bg-white rounded-lg shadow-sm">
                         {/* Modal header */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                            <h3 className="text-xl font-semibold text-gray-900">
                                 Add new Expense
                             </h3>
-                            <button onClick={() => closeModal("spendwise-add-new-expense")} className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:text-white">
+                            <button onClick={() => closeModal("spendwise-add-new-expense")} className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
                                 <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
@@ -338,31 +338,31 @@ export default () => {
                             <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                                 {/* Name */}
                                 <div>
-                                    <label htmlFor="name" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Name</label>
-                                    <input type="text" name="name" id="name" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-gray-700 dark:text-white" : ""}`} required />
+                                    <label htmlFor="name" className={`block mb-2 text-sm font-medium text-gray-900`}>Name</label>
+                                    <input type="text" name="name" id="name" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`} required />
                                 </div>
                                 {/* Date */}
                                 <div>
-                                    <label htmlFor="date" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Date</label>
-                                    <input type="date" name="date" id="date" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-gray-700 dark:text-white" : ""}`} required />
+                                    <label htmlFor="date" className={`block mb-2 text-sm font-medium text-gray-900`}>Date</label>
+                                    <input type="date" name="date" id="date" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`} required />
                                 </div>
                                 {/* Amount */}
                                 <div>
-                                    <label htmlFor="amount" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Amount</label>
-                                    <input type="number" name="amount" id="amount" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-gray-700 dark:text-white" : ""}`} required />
+                                    <label htmlFor="amount" className={`block mb-2 text-sm font-medium text-gray-900`}>Amount</label>
+                                    <input type="number" name="amount" id="amount" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`} required />
                                 </div>
                                 {/* Category */}
                                 <div>
-                                    <label htmlFor="category" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Category</label>
-                                    <select name="category" id="category" className={`border border-gray-300 p-2 sm: mr-4 block w-full whitespace-pre rounded-lg p-1 pr-10 outline-none focus:shadow sm:text-sm ${settings.darkMode ? "dark:text-white" : ""}`} onChange={handleChange}>
+                                    <label htmlFor="category" className={`block mb-2 text-sm font-medium text-gray-900`}>Category</label>
+                                    <select name="category" id="category" className={`border border-gray-300 p-2 sm: mr-4 block w-full whitespace-pre rounded-lg p-1 pr-10 outline-none focus:shadow sm:text-sm`} onChange={handleChange}>
                                         <option value="income">Income</option>
                                         <option value="expense">Expense</option>
                                     </select>
                                 </div>
                                 {/* Expense Type */}
                                 <div>
-                                    <label htmlFor="expense_type" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Expense Type</label>
-                                    <select name="expense_type" id="expense_type" className={`border border-gray-300 p-2 sm: mr-4 block w-full whitespace-pre rounded-lg p-1 pr-10 outline-none focus:shadow sm:text-sm ${settings.darkMode ? "dark:text-white" : ""}`} onChange={handleChange}>
+                                    <label htmlFor="expense_type" className={`block mb-2 text-sm font-medium text-gray-900`}>Expense Type</label>
+                                    <select name="expense_type" id="expense_type" className={`border border-gray-300 p-2 sm: mr-4 block w-full whitespace-pre rounded-lg p-1 pr-10 outline-none focus:shadow sm:text-sm`} onChange={handleChange}>
                                         <option value="food">Food</option>
                                         <option value="travel">Travel</option>
                                         <option value="entertainment">Entertainment</option>
@@ -370,13 +370,13 @@ export default () => {
                                 </div>
                                 {/* UPI ID */}
                                 <div>
-                                    <label htmlFor="upi_id" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>UPI ID (Optional)</label>
-                                    <input type="text" name="upi_id" id="upi_id" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-gray-700 dark:text-white" : ""}`} />
+                                    <label htmlFor="upi_id" className={`block mb-2 text-sm font-medium text-gray-900`}>UPI ID (Optional)</label>
+                                    <input type="text" name="upi_id" id="upi_id" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`} />
                                 </div>
                                 {/* Transaction ID */}
                                 <div>
-                                    <label htmlFor="transaction_id" className={`block mb-2 text-sm font-medium text-gray-900 ${settings.darkMode ? "dark:text-white" : ""}`}>Transaction ID (Optional)</label>
-                                    <input type="text" name="transaction_id" id="transaction_id" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${settings.darkMode ? "dark:bg-gray-700 dark:text-white" : ""}`} />
+                                    <label htmlFor="transaction_id" className={`block mb-2 text-sm font-medium text-gray-900`}>Transaction ID (Optional)</label>
+                                    <input type="text" name="transaction_id" id="transaction_id" onChange={handleChange} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`} />
                                 </div>
                                 <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer">Add Expense</button>
                             </form>

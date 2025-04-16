@@ -13,14 +13,6 @@ export default function ProfileMobile() {
         email: "",
         mobile: "",
     });
-    const [settings, setSettings] = useState({
-        enableNotifications: false,
-        smartSpendingNotifications: false,
-        dailySummary: false,
-        weeklySummary: false,
-        hideDefaultSMSNotifications: false,
-        darkMode: false,
-    });
 
     useEffect(() => {
         // This runs only on the client side
@@ -32,21 +24,6 @@ export default function ProfileMobile() {
 
     useEffect(() => {
         setReady(true);
-    }, []);
-
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
-                if (!response.ok) throw new Error("Failed to fetch settings");
-                const data = await response.json();
-                setSettings(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-
-        fetchSettings();
     }, []);
 
     const handleInputChange = (e) => {
@@ -107,12 +84,12 @@ export default function ProfileMobile() {
 
     return (
         <>
-            <div className={`min-h-screen bg-gray-50 ${settings.darkMode ? "dark:bg-[#0f172a]" : ""} px-4 pt-6 pb-20 transition-colors duration-300`}>
+            <div className={`min-h-screen bg-gray-50 px-4 pt-6 pb-20 transition-colors duration-300`}>
                 {/* Header */}
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className={`text-2xl font-semibold text-gray-800 ${settings.darkMode ? "dark:text-white" : ""}`}>Profile</h2>
+                    <h2 className={`text-2xl font-semibold text-gray-800`}>Profile</h2>
                     <button
-                        className={`text-blue-500 ${settings.darkMode ? "dark:text-blue-400" : ""} font-medium`}
+                        className={`text-blue-500 font-medium`}
                         onClick={handleUpdateProfile}
                     >
                         Save
@@ -121,9 +98,9 @@ export default function ProfileMobile() {
 
                 {/* Profile Image */}
                 <div className="flex justify-center mb-6">
-                    <div className={`w-24 h-24 rounded-full overflow-hidden shadow-md flex items-center justify-center bg-gray-500 ${settings.darkMode ? "dark:bg-gray-600" : ""}`}>
+                    <div className={`w-24 h-24 rounded-full overflow-hidden shadow-md flex items-center justify-center bg-gray-500`}>
                         <svg
-                            className={`w-20 h-18 text-gray-300 ${settings.darkMode ? "dark:text-gray-400" : ""}`}
+                            className={`w-20 h-18 text-gray-300`}
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
@@ -140,47 +117,47 @@ export default function ProfileMobile() {
                 {/* Input Fields */}
                 <form className="space-y-4" onSubmit={handleUpdateProfile}>
                     <div>
-                        <label className={`text-sm text-gray-500 ${settings.darkMode ? "dark:text-gray-300" : ""} mb-1 block`}>First Name</label>
+                        <label className={`text-sm text-gray-500 mb-1 block`}>First Name</label>
                         <input
                             type="text"
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleInputChange}
-                            className={`w-full bg-white text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white dark:border-gray-600" : ""}`}
+                            className={`w-full bg-white text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none`}
                         />
                     </div>
 
                     <div>
-                        <label className={`text-sm text-gray-500 ${settings.darkMode ? "dark:text-gray-300" : ""} mb-1 block`}>Last Name</label>
+                        <label className={`text-sm text-gray-500 mb-1 block`}>Last Name</label>
                         <input
                             type="text"
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleInputChange}
-                            className={`w-full bg-white text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white dark:border-gray-600" : ""}`}
+                            className={`w-full bg-white text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none`}
                         />
                     </div>
 
                     <div>
-                        <label className={`text-sm text-gray-500 ${settings.darkMode ? "dark:text-gray-300" : ""} mb-1 block`}>Email</label>
+                        <label className={`text-sm text-gray-500 mb-1 block`}>Email</label>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className={`w-full bg-white text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none ${settings.darkMode ? "dark:bg-[#1e293b] dark:text-white dark:border-gray-600" : ""}`}
+                            className={`w-full bg-white text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none`}
                         />
                     </div>
 
                     <div>
-                        <label className={`text-sm text-gray-500 ${settings.darkMode ? "dark:text-gray-300" : ""} mb-1 block`}>Mobile</label>
+                        <label className={`text-sm text-gray-500 mb-1 block`}>Mobile</label>
                         <input
                             type="tel"
                             name="mobile"
                             value={formData.mobile}
                             onChange={handleInputChange}
                             readOnly
-                            className={`w-full bg-gray-300 text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none ${settings.darkMode ? "dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600" : ""}`}
+                            className={`w-full bg-gray-300 text-gray-800 text-sm px-4 py-3 rounded-xl border border-gray-200 focus:outline-none`}
                         />
                     </div>
                 </form>
