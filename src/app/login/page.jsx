@@ -57,6 +57,10 @@ export default () => {
 
             setSuccess("Login Successfull!");
 
+            if (window.FlutterBridge) {
+                window.FlutterBridge.postMessage(data.user.id);
+            }
+
             setTimeout(() => {
                 router.push("/dashboard");
             }, 1000);

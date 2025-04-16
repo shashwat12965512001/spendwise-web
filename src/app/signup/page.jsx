@@ -52,6 +52,10 @@ export default () => {
 
             setSuccess("User Created Successfully!");
 
+            if (window.FlutterBridge) {
+                window.FlutterBridge.postMessage(data.user.id);
+            }
+
             setTimeout(() => {
                 router.push("/login");
             }, 1000);
