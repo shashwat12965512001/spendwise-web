@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiSearch, FiTrash2 } from 'react-icons/fi';
 import { Dialog } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,6 +8,15 @@ import { AnimatePresence, motion } from 'framer-motion';
 export default function TransactionsMobile({ transactions, deleteTransaction, openModal }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedTxn, setSelectedTxn] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }, []);
+
     const filteredTransactions = transactions.filter((txn) =>
         txn.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -34,48 +43,54 @@ export default function TransactionsMobile({ transactions, deleteTransaction, op
 
                 {/* Transactions List */}
                 <div className="space-y-3">
-                    {filteredTransactions.length > 0 ? (
-                        filteredTransactions.map((txn) => (
-                            <motion.div
-                                key={txn._id}
-                                initial={{ opacity: 0, x: 40 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 40 }}
-                                transition={{ duration: 0.2 }}
-                                className={`bg-white rounded-lg shadow p-4 relative`}
-                            >
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h3 className={`font-semibold text-gray-900`}>{txn.name}</h3>
-                                        <p className={`text-sm text-gray-500`}>{formatDate(txn.date)}</p>
-                                    </div>
-                                    <p
-                                        className={`text-sm font-medium ${txn.category === "income"
-                                            ? "text-green-600"
-                                            : "text-red-600"
-                                            }`}
+                    {
+                        loading ? (
+                            <div className="text-center py-4 text-gray-500">Loading...</div>
+                        ) : (
+                            filteredTransactions.length > 0 ? (
+                                filteredTransactions.map((txn) => (
+                                    <motion.div
+                                        key={txn._id}
+                                        initial={{ opacity: 0, x: 40 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: 40 }}
+                                        transition={{ duration: 0.2 }}
+                                        className={`bg-white rounded-lg shadow p-4 relative`}
                                     >
-                                        {txn.category === "income" ? "+" : "-"} ₹{txn.amount.toFixed(2)}
-                                    </p>
-                                </div>
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <h3 className={`font-semibold text-gray-900`}>{txn.name}</h3>
+                                                <p className={`text-sm text-gray-500`}>{formatDate(txn.date)}</p>
+                                            </div>
+                                            <p
+                                                className={`text-sm font-medium ${txn.category === "income"
+                                                    ? "text-green-600"
+                                                    : "text-red-600"
+                                                    }`}
+                                            >
+                                                {txn.category === "income" ? "+" : "-"} ₹{txn.amount.toFixed(2)}
+                                            </p>
+                                        </div>
 
-                                {/* Swipe Actions */}
-                                <div className="mt-3 flex justify-end gap-4">
-                                    <button
-                                        onClick={() => openTransactionModal(txn)}
-                                        className={`text-indigo-600 text-sm font-medium`}
-                                    >
-                                        View
-                                    </button>
-                                    <button onClick={() => deleteTransaction(txn._id)} className="text-red-500">
-                                        <FiTrash2 />
-                                    </button>
-                                </div>
-                            </motion.div>
-                        ))
-                    ) : (
-                        <p className={`text-gray-500 text-sm`}>No transactions found.</p>
-                    )}
+                                        {/* Swipe Actions */}
+                                        <div className="mt-3 flex justify-end gap-4">
+                                            <button
+                                                onClick={() => openTransactionModal(txn)}
+                                                className={`text-indigo-600 text-sm font-medium`}
+                                            >
+                                                View
+                                            </button>
+                                            <button onClick={() => deleteTransaction(txn._id)} className="text-red-500">
+                                                <FiTrash2 />
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                ))
+                            ) : (
+                                <p className={`text-gray-500 text-sm`}>No transactions found.</p>
+                            )
+                        )
+                    }
                 </div>
 
                 {/* Modal */}

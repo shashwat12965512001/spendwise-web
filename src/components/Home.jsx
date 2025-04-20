@@ -14,14 +14,16 @@ const Dashboard = () => {
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
         setUser(storedUser);
-        if (storedUser?.id) {
-            fetchRecentTransactions(storedUser.id, count).then(setTransactions);
+        const userId = storedUser._id || storedUser.id;
+        if (userId) {
+            fetchRecentTransactions(userId, count).then(setTransactions);
+            fetchMonthlyBudget(userId);
         }
     }, []);
 
     const fetchRecentTransactions = async (userId, count = 10) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${userId || "67e5243891c1b8d5efd524d6"}/${count}`, {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/recent/${userId}/${count}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,6 +41,31 @@ const Dashboard = () => {
         } catch (error) {
             console.error("Server error:", error);
             return [];
+        }
+    };
+
+    const fetchMonthlyBudget = async (userId) => {
+        try {
+            const response = await fetch("https://backend.weblytechnolab.com/getMonthlyBudget", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: userId }),
+            });
+
+            const data = await response.json();
+            console.log("Response:", data);
+
+            if (data.status) {
+                console.log("✅ Monthly budget fetched successfully:", data.transactions);
+            } else {
+                console.error("❌ Error fetching monthly budget:", data.message || data.error);
+                return {};
+            }
+        } catch (error) {
+            console.error("🚨 Server error:", error);
+            return {};
         }
     };
 

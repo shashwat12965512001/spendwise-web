@@ -33,15 +33,16 @@ export default () => {
         setReady(true);
         const storedToken = localStorage.getItem("token");
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        const id = storedUser._id || storedUser.id;
 
         setToken(storedToken);
-        if (storedUser?._id) {
-            setUserId(storedUser._id);
-            fetchTransactions();
+        if (id) {
+            setUserId(id);
+            fetchTransactions(id);
         }
     }, []);
 
-    const fetchTransactions = async () => {
+    const fetchTransactions = async (userId) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/transactions/all/${userId}`, {
                 method: "GET",
@@ -63,6 +64,7 @@ export default () => {
             console.error("Error fetching transactions:", error);
         }
     };
+
     const deleteTransaction = async (id) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/transactions/delete/${id}`, {

@@ -23,10 +23,9 @@ export default () => {
         hideDefaultSMSNotifications: false,
         darkMode: false,
     });
-    const userId = user?.id;
+    const userId = user && user._id || user && user.id;
 
     useEffect(() => {
-        // This runs only on the client side
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser)); // Parse JSON if stored as an object
@@ -34,40 +33,39 @@ export default () => {
     }, []);
 
     useEffect(() => {
-        const fetchLoginHistory = async () => {
-            try {
-                const res = await fetch(`${API_BASE_URL}/api/users/${userId}/login-history`);
-                const data = await res.json();
-
-                if (res.ok) {
-                    setLoginHistory(data.loginHistory || []);
-                    setLoading(false);
-                } else {
-                    setError(data.error || "Failed to fetch login history");
-                    setLoading(false);
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        if (userId) fetchLoginHistory();
+        if (userId) {
+            fetchLoginHistory(userId);
+            fetchSettings(userId);
+        }
     }, [userId]);
 
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/settings/get/${user && user.id || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
-                if (!response.ok) throw new Error("Failed to fetch settings");
-                const data = await response.json();
-                setSettings(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
+    const fetchLoginHistory = async (userId) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/users/${userId}/login-history`);
+            const data = await res.json();
 
-        fetchSettings();
-    }, []);
+            if (res.ok) {
+                setLoginHistory(data.loginHistory || []);
+                setLoading(false);
+            } else {
+                setError(data.error || "Failed to fetch login history");
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const fetchSettings = async (userId) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/settings/get/${userId}`); // Replace with your actual API route
+            if (!response.ok) throw new Error("Failed to fetch settings");
+            const data = await response.json();
+            setSettings(data);
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
 
     useEffect(() => {
         if (settings.darkMode) {

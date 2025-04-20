@@ -70,9 +70,9 @@ export default function ProfileMobile() {
                 localStorage.setItem("user", JSON.stringify(updatedUser.user));
                 setUser(updatedUser.user);
             } else {
-                setReady(true);
                 console.log("Failed to update profile: " + response.error);
             }
+            setReady(true);
         } catch (error) {
             setReady(true);
             console.error("Error updating profile:", error);
