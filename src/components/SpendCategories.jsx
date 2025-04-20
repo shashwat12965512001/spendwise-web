@@ -80,7 +80,6 @@ export default () => {
             setNewCategory("");
             setNewIcon("");
             closeModal();
-            window.location.reload();
         } catch (error) {
             console.error("Error adding category:", error);
             alert("Something went wrong. Please try again.");

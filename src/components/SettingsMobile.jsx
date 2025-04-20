@@ -293,31 +293,6 @@ export default () => {
                         <button onClick={() => router.push("/profile")} className="text-sm text-blue-500 hover:underline">Edit</button>
                     </div>
 
-                    {/* Preferences */}
-                    {/* <div className={`bg-white rounded-xl shadow-sm p-4 space-y-4`}>
-                        <div className="flex items-center gap-4 mb-4">
-                            <svg className={`h-4 w-4 text-gray-900`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="3" />
-                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                            </svg>
-                            <h3 className={`text-gray-700 text-sm font-medium`}>Preferences</h3>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                            <span className={`text-sm text-gray-600`}>Dark Mode</span>
-                            <label className="inline-flex relative items-center cursor-pointer">
-                                <input type="checkbox" checked={settings.darkMode || false} onChange={(e) => {
-                                    handleToggle("darkMode", e.target.checked);
-                                    setTimeout(() => {
-                                        document.getElementById("spendwise-save-notifications").click();
-                                        window.location.reload();
-                                    }, 1000);
-                                }} className="sr-only peer" />
-                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            </label>
-                        </div>
-                    </div> */}
-
                     {/* Account Section */}
                     <div className={`bg-white rounded-xl shadow-sm p-4 space-y-4`}>
                         <div className="flex items-center gap-4 mb-4">

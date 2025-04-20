@@ -69,7 +69,6 @@ export default function ProfileMobile() {
                 const updatedUser = await response.json();
                 localStorage.setItem("user", JSON.stringify(updatedUser.user));
                 setUser(updatedUser.user);
-                window.location.reload();
             } else {
                 setReady(true);
                 console.log("Failed to update profile: " + response.error);

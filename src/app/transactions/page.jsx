@@ -19,46 +19,27 @@ export default () => {
     const [transactions, setTransactions] = useState([]);
     const [editTransaction, setEditTransaction] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [settings, setSettings] = useState({
-        enableNotifications: false,
-        smartSpendingNotifications: false,
-        dailySummary: false,
-        weeklySummary: false,
-        hideDefaultSMSNotifications: false,
-        darkMode: false,
+    const [expense, setExpense] = useState({
+        name: "",
+        date: "",
+        amount: "",
+        category: "income",
+        expense_type: "food",
+        upi_id: "",
+        transaction_id: "",
     });
 
     useEffect(() => {
         setReady(true);
-    }, []);
-
-    useEffect(() => {
         const storedToken = localStorage.getItem("token");
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
         setToken(storedToken);
-        if (storedUser?.id) {
-            setUserId(storedUser.id);
+        if (storedUser?._id) {
+            setUserId(storedUser._id);
+            fetchTransactions();
         }
     }, []);
-
-    useEffect(() => {
-        if (userId) {
-            fetchTransactions();
-            fetchSettings();
-        }
-    }, [userId]);
-
-    const fetchSettings = async (userId) => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/settings/get/${userId || "67e5243891c1b8d5efd524d6"}`); // Replace with your actual API route
-            if (!response.ok) throw new Error("Failed to fetch settings");
-            const data = await response.json();
-            setSettings(data);
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
 
     const fetchTransactions = async () => {
         try {
@@ -82,7 +63,6 @@ export default () => {
             console.error("Error fetching transactions:", error);
         }
     };
-
     const deleteTransaction = async (id) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/transactions/delete/${id}`, {
@@ -131,7 +111,7 @@ export default () => {
             // Update the transaction in state
             setTransactions(transactions.map((t) => (t._id === updatedTransaction._id ? updatedTransaction.transaction : t)));
 
-            window.location.reload();
+            setReady(true);
         } catch (error) {
             console.error("Error updating transaction:", error);
         }
@@ -141,17 +121,6 @@ export default () => {
         setEditTransaction(transaction);
         setIsModalOpen(true);
     };
-
-    // State to store form data
-    const [expense, setExpense] = useState({
-        name: "",
-        date: "",
-        amount: "",
-        category: "income",
-        expense_type: "food",
-        upi_id: "",
-        transaction_id: "",
-    });
 
     // Handle input change
     const handleChange = (e) => {
@@ -189,7 +158,7 @@ export default () => {
             // Close the modal (optional)
             closeModal("spendwise-add-new-expense");
 
-            window.location.reload();
+            setReady(true);
         } catch (error) {
             console.error("Error:", error);
         }
