@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
 import BalanceCard from './BalanceCard'
@@ -7,7 +8,7 @@ import API_BASE_URL from '@/app/utils/apiConfig'
 
 const Dashboard = () => {
     const count = 10;
-    const [balance] = useState(22950.0);
+    const [balance, setBalance] = useState(50000.00);
     const [transactions, setTransactions] = useState([]);
     const [user, setUser] = useState(null);
 
@@ -58,7 +59,8 @@ const Dashboard = () => {
             console.log("Response:", data);
 
             if (data.status) {
-                console.log("✅ Monthly budget fetched successfully:", data.transactions);
+                console.log("✅ Monthly budget fetched successfully:", data.monthly_budget);
+                setBalance(data.monthly_budget);
             } else {
                 console.error("❌ Error fetching monthly budget:", data.message || data.error);
                 return {};
