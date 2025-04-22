@@ -16,8 +16,9 @@ export default function RootLayout({ children }) {
           {`
             window.onload = function () {
               const user = JSON.parse(localStorage.getItem("user"));
-              if (user && user._id && window.FlutterBridge) {
-                window.FlutterBridge.postMessage(user._id);
+              const id = user && user._id || user && user.id;
+              if (id && window.FlutterBridge) {
+                window.FlutterBridge.postMessage(id);
               }
             };
           `}

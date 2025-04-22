@@ -7,8 +7,9 @@ import { useEffect } from "react";
 export default function LayoutWrapper({ children }) {
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
-        if (user && user._id && window.FlutterBridge) {
-            window.FlutterBridge.postMessage(user._id);
+        const id = user && user._id || user && user.id;
+        if (id && window.FlutterBridge) {
+            window.FlutterBridge.postMessage(id);
         } else {
             console.log("FlutterBridge or user._id missing");
         }
