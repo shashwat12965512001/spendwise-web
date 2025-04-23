@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import API_BASE_URL from "@/app/utils/apiConfig";
+import { API_BASE_URL } from "@/app/utils/apiConfig";
 import { useEffect, useState } from "react";
 import { usePathname } from 'next/navigation';
 import {
@@ -9,6 +9,7 @@ import {
     ChartBarIcon,
     UserIcon,
     Cog6ToothIcon,
+    ShoppingBagIcon
 } from '@heroicons/react/24/outline';
 
 export default function BottomNav() {
@@ -16,6 +17,7 @@ export default function BottomNav() {
     const navItems = [
         { name: 'Home', href: '/', icon: HomeIcon },
         { name: 'Transactions', href: '/transactions', icon: ChartBarIcon },
+        { name: 'Shopping', href: '/shopping', icon: ShoppingBagIcon },
         { name: 'Profile', href: '/profile', icon: UserIcon },
         { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
     ];

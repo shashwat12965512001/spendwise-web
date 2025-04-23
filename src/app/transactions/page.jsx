@@ -3,7 +3,7 @@
 import { FiPlus } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import API_BASE_URL from "../utils/apiConfig";
+import { API_BASE_URL } from "../utils/apiConfig";
 import Papa from "papaparse";
 import useIsMobile from "../hooks/useIsMobile";
 import TransactionsMobile from "@/components/TransactionsMobile";

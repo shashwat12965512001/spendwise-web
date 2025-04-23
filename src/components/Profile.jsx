@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import API_BASE_URL from "../app/utils/apiConfig";
+import { API_BASE_URL } from "../app/utils/apiConfig";
 
 
 export default function Profile() {

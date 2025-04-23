@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import API_BASE_URL from "../utils/apiConfig";
+import { API_BASE_URL } from "../utils/apiConfig";
 import Loader from "@/components/Loader";
 
 export default () => {

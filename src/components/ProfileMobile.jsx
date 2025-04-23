@@ -1,6 +1,6 @@
 "use client";
 
-import API_BASE_URL from "@/app/utils/apiConfig";
+import { API_BASE_URL } from "@/app/utils/apiConfig";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 

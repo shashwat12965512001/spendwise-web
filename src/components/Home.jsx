@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
 import BalanceCard from './BalanceCard'
 import TransactionList from './TransactionList'
-import API_BASE_URL from '@/app/utils/apiConfig'
+import { API_BASE_URL } from '@/app/utils/apiConfig'
 
 const Dashboard = () => {
     const count = 10;

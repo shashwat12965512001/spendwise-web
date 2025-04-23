@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import API_BASE_URL from "../app/utils/apiConfig";
+import { API_BASE_URL } from "../app/utils/apiConfig";
 
 export const RecentTransactions = ({ count = 10, userId }) => {
     const [transactions, setTransactions] = useState([]);

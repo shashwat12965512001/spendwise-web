@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 import Profile from "@/components/Profile";
 import SpendCategories from "@/components/SpendCategories";
 import ToggleSwitch from "@/components/ToogleSwitch";
-import API_BASE_URL from "../utils/apiConfig";
+import { API_BASE_URL } from "../utils/apiConfig";
 import Sidebar from "@/components/Sidebar";
 import useIsMobile from "../hooks/useIsMobile";
 import SettingsMobile from "@/components/SettingsMobile";

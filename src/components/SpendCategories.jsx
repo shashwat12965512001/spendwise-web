@@ -1,4 +1,4 @@
-import API_BASE_URL from "../app/utils/apiConfig";
+import { API_BASE_URL } from "../app/utils/apiConfig";
 import { useState, useEffect } from "react";
 
 export default () => {
