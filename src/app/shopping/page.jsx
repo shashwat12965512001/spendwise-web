@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { API_KEY } from '@/app/utils/apiConfig';
 import Loader from '@/components/Loader';
 export default function ShoppingPage() {
     const [loading, setLoading] = useState(true);
