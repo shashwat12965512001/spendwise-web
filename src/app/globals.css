@@ -17,3 +17,19 @@ input {
     scroll-margin-top: 100px; /* Adjust as needed */
     scroll-behavior: smooth;
 }
+
+/* styles/globals.css or ShoppingPage.module.css */
+.slick-dots {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap !important;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding: 0;
+  }
+  
+  .slick-dots li {
+    margin: 0 !important;
+  }
+  
