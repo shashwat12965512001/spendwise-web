@@ -84,18 +84,18 @@ export default function ShoppingPage() {
             if (data.data != null && data.data.products != null) {
                 const products = data.data.products;
                 const deals = [];
-                Object.keys(products).forEach(async (key) => {
-                    const product = products[key];
-                    const productObject = await amazonProductDetails(URL.parse(product.url).href);
-                    if (productObject == null) return;
-                    deals.push({
-                        title: productObject.name,
-                        description: productObject.full_description,
-                        image: productObject.images[0],
-                        price: productObject.pricing,
-                        link: product.url
-                    });
-                });
+                // Object.keys(products).forEach(async (key) => {
+                //     const product = products[key];
+                //     const productObject = await amazonProductDetails(URL.parse(product.url).href);
+                //     if (productObject == null) return;
+                //     deals.push({
+                //         title: productObject.name,
+                //         description: productObject.full_description,
+                //         image: productObject.images[0],
+                //         price: productObject.pricing,
+                //         link: product.url
+                //     });
+                // });
                 setOffers(deals);
             }
         } catch (error) {
