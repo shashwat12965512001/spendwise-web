@@ -84,18 +84,18 @@ export default function ShoppingPage() {
             if (data.data != null && data.data.products != null) {
                 const products = data.data.products;
                 const deals = [];
-                // Object.keys(products).forEach(async (key) => {
-                //     const product = products[key];
-                //     const productObject = await amazonProductDetails(URL.parse(product.url).href);
-                //     if (productObject == null) return;
-                //     deals.push({
-                //         title: productObject.name,
-                //         description: productObject.full_description,
-                //         image: productObject.images[0],
-                //         price: productObject.pricing,
-                //         link: product.url
-                //     });
-                // });
+                Object.keys(products).forEach(async (key) => {
+                    const product = products[key];
+                    // const productObject = await amazonProductDetails(URL.parse(product.url).href);
+                    // if (productObject == null) return;
+                    // deals.push({
+                    //     title: productObject.name,
+                    //     description: productObject.full_description,
+                    //     image: productObject.images[0],
+                    //     price: productObject.pricing,
+                    //     link: product.url
+                    // });
+                });
                 setOffers(deals);
             }
         } catch (error) {
@@ -132,7 +132,7 @@ export default function ShoppingPage() {
             </Slider>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
-                {offers.map((offer, index) => (
+                {offers ? offers.map((offer, index) => (
                     <a
                         href={offer.link}
                         target="_blank"
@@ -155,7 +155,11 @@ export default function ShoppingPage() {
                             </div>
                         </div>
                     </a>
-                ))}
+                )) : (
+                    <div className="bg-white p-3 rounded-lg shadow-md flex flex-col">
+                        <p className="text-sm font-semibold text-gray-900">No Product offers available at the moment.</p>
+                    </div>
+                )}
             </div>
         </div>
     );
