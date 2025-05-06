@@ -86,15 +86,17 @@ export default function ShoppingPage() {
                 const deals = [];
                 Object.keys(products).forEach(async (key) => {
                     const product = products[key];
-                    // const productObject = await amazonProductDetails(URL.parse(product.url).href);
-                    // if (productObject == null) return;
-                    // deals.push({
-                    //     title: productObject.name,
-                    //     description: productObject.full_description,
-                    //     image: productObject.images[0],
-                    //     price: productObject.pricing,
-                    //     link: product.url
-                    // });
+                    const params = new URL(product.brand_url).searchParams;
+                    const id = params.get('lp_asin');
+                    const url = 'https://www.amazon.in/' + product.name + '/dp/' + id;
+                    deals.push({
+                        id: id,
+                        title: product.name,
+                        description: product.full_description,
+                        image: product.images[0],
+                        price: product.pricing,
+                        link: url,
+                    });
                 });
                 setOffers(deals);
             }
@@ -112,16 +114,16 @@ export default function ShoppingPage() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">Amazon Deals</h2>
 
             <Slider {...sliderSettings} className='mb-5'>
-                {banner.map((img, index) => (
+                {banner.map((element, index) => (
                     <div key={index} className="px-2">
                         <a
-                            href="#"
+                            href={element.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-white p-3 flex flex-col hover:shadow-lg transition duration-200"
                         >
                             <img
-                                src={img}
+                                src={element.img}
                                 width="20"
                                 alt="Offer Banner"
                                 className="rounded-md w-full max-h-60 mb-5"
