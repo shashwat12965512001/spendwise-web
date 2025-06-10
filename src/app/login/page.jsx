@@ -90,6 +90,7 @@ export default () => {
                         <div>
                             <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                                 Email address
+                                {API_BASE_URL}
                             </label>
                             <div className="mt-2">
                                 <input
