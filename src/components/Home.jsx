@@ -47,7 +47,8 @@ const Dashboard = () => {
 
     const fetchMonthlyBudget = async (userId) => {
         try {
-            const response = await fetch("https://backend.weblytechnolab.com/getMonthlyBudget", {
+            // const response = await fetch("https://backend.weblytechnolab.com/getMonthlyBudget", {
+            const response = await fetch("http://localhost:8090/getMonthlyBudget", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
