@@ -47,6 +47,7 @@ export default () => {
             const data = await response.json();
             if (!response.ok) {
                 setresultError(data.error || "Failed to add user"); // Use error message from response
+                setReady(true);
                 return;
             }
 
